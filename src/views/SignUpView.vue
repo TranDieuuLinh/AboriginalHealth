@@ -1,9 +1,9 @@
 <script setup>
-import Home from '../components/Home.vue'
+import SignUp from '../components/SignUp.vue'
 </script>
 
 <template>
   <main>
-    <Home/>
+    <SignUp/>
   </main>
 </template>
