@@ -3,7 +3,7 @@
       <div class="flex md:flex-row items-center justify-between bg-white sm:max-w-xl md:max-w-3xl lg:max-w-4xl rounded-2xl shadow-lg">
         
         <div class="flex flex-col p-6 md:p-10 w-full md:w-1/2">
-          <h1 class="text-3xl md:text-5xl  font-bold brownColorText mb-2">Join Us</h1>
+          <h1 class="text-3xl md:text-4xl  font-bold brownColorText mb-2">Join Us</h1>
           <p class="text-xs md:text-sm text-gray-400 mb-5">Help Us Build a Healthier Future for Aboriginal Communities</p>
           <form @submit.prevent="handleSubmission">
             <div class="mb-4">
@@ -18,9 +18,9 @@
             </div>
 
             <div class="mb-4">
-                <label for="phone" class="block text-xs md:text-sm font-medium text-gray-700">Phone</label>
-                <input type="tel" @blur="validatePhone(true)"  v-model="formData.phone" @input="validatePhone(false)" required id="phone" class="mt-1 block w-full md:w-[90%] text-xs md:text-base p-2 border border-gray-300 rounded-md shadow-sm" placeholder="Enter your phone">
-                <div v-if="errors.phone" class="text-orange-700 text-xs md:text-sm mt-1">{{ errors.phone }} </div>
+                <label for="name" class="block text-xs md:text-sm font-medium text-gray-700">Name</label>
+                <input type="name" @blur="validateFullName(true)" v-model="formData.fullName" @input="validateFullName" required id="name" class="mt-1 block w-full md:w-[90%] text-xs md:text-base p-2 border border-gray-300 rounded-md shadow-sm" placeholder="Enter your name">
+                <div v-if="errors.fullName" class="text-orange-700 text-xs md:text-sm mt-1">{{ errors.fullName }} </div>
             </div>
     
             <div class="mb-4">
@@ -40,7 +40,7 @@
     
             <p class="text-xs md:text-sm text-gray-600 mt-4">
                 Already have an account? 
-                <RouterLink to="/signin" class="text-blue-600 hover:text-blue-500">Sign in</RouterLink>
+                <RouterLink to="/login" class="text-blue-600 hover:text-blue-500">Sign in</RouterLink>
             </p>
           </form>
         </div>
@@ -55,57 +55,54 @@
   </template>
   
   <script setup>
-    import { ref, computed } from 'vue';
+    import { ref } from 'vue';
+    const submittedCards = ref([]);
 
     const validatePassword = (blur) => {
-    const password = formData.value.password;
-    const minLength = 8;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
+        const password = formData.value.password;
+        const minLength = 8;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
 
-    if (password.length < minLength) {
-        if (blur) errors.value.password = `Your password must be at least ${minLength} characters long.`;
-    } else if (!hasUpperCase) {
-        if (blur) errors.value.password = 'Your password must have at least 1 uppercase letter.';
-    } else if (!hasLowerCase) {
-        if (blur) errors.value.password = 'Your password must have at least 1 lowercase letter.';
-    } else {
-        errors.value.password = null; 
-    }
-    };
-
-
-    const validatePhone = (blur) => {
-        const phone = formData.value.phone
-        const digit = /\d/.test(phone)
-        const phoneCheck = /^0\d{9}$/.test(phone)
-
-        if (!phoneCheck){
-            if(blur) errors.value.phone = 'Your phone must starts with 0 and be exactly 10 digits';
-        } else if(!digit){
-            if (blur) errors.value.phone = 'Your phone must be a digit'
-        }   
-        else {
-            errors.value.phone = null;
+        if (password.length < minLength) {
+            if (blur) errors.value.password = `Your password must be at least ${minLength} characters long.`;
+        } else if (!hasUpperCase) {
+            if (blur) errors.value.password = 'Your password must have at least 1 uppercase letter.';
+        } else if (!hasLowerCase) {
+            if (blur) errors.value.password = 'Your password must have at least 1 lowercase letter.';
+        } else {
+            errors.value.password = null; 
         }
-    }
+        };
+
+
+    const validateFullName = (blur) => {
+        const fullName = formData.value.fullName; 
+        const hasUpperCase = /[A-Z]/.test(fullName);
+
+        if (!hasUpperCase) {
+            if (blur) errors.value.fullName = 'Name must contain at least one capital letter.';
+        } else {
+            errors.value.fullName = null; 
+        }
+    };
 
     const formData = ref({
         password:'',
         email:'',
-        phone:'',
+        fullName:'',
         role:''
     });
 
     const errors = ref({
         password:null,
-        phone:null
+        fullName:null
     });
 
     const handleSubmission=() =>{
         validatePassword(true),
-        validatePhone(true)
-        if( !errors.value.password && !errors.value.phone && formData.value.email!=='' && formData.value.password!=='' ){
+        validateFullName(true)
+        if( !errors.value.password && !errors.value.fullName && formData.value.email!=='' && formData.value.password!=='' ){
             clearForm();
         }
     };
@@ -114,7 +111,7 @@
         formData.value={
             email: '',
             password: '',
-            phone: '',
+            fullName: '',
             role:''
         };
     }
