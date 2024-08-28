@@ -1,0 +1,62 @@
+[
+    {
+      "id": 1,
+      "day": "12",
+      "month": "Sep",
+      "title": "Mother Tounge Poetry",
+      "location": "Melbourne",
+      "time": "10:00 AM",
+      "description": "Mother Tongue is a place for Passionate, Powerful, Vulnerable and Honest performance; it stands aside from most Spoken Word events in its depth and authenticity.",
+      "url": "https://www.eventbrite.com.au/e/mother-tongue-poetry-melbourne-december-2024-feature-artist-tbc-tickets-852687309697?aff=ebdssbdestsearch",
+      "cost": "25",
+      "number_of_people": 100
+    },
+    {
+      "id": 2,
+      "day": "14",
+      "month": "Sep",
+      "title": "Comedy at Jambo!",
+      "location": "Location B",
+      "time": "2:00 PM",
+      "description": "Short description of the event B.",
+      "url": "https://www.eventbrite.com.au/e/comedy-at-jambo-tickets-970123564697?aff=ebdssbdestsearch",
+      "cost": "15",
+      "number_of_people": 50
+    },
+    {
+      "id": 3,
+      "day": "20",
+      "month": "Sep",
+      "title": "VAHS Community Yarns",
+      "location": "Location C",
+      "time": "6:00 PM",
+      "description": "Short description of the event C.",
+      "url": "https://www.eventbrite.com.au/e/vahs-community-yarns-fitzroy-tickets-954446764967?aff=ebdssbdestsearch&keep_tld=1",
+      "cost": "Free",
+      "number_of_people": 80
+    },
+    {
+      "id": 4,
+      "day": "20",
+      "month": "Sep",
+      "title": "VAHS Community Yarns",
+      "location": "Location C",
+      "time": "6:00 PM",
+      "description": "Short description of the event C.",
+      "url": "https://www.eventbrite.com.au/e/vahs-community-yarns-fitzroy-tickets-954446764967?aff=ebdssbdestsearch&keep_tld=1",
+      "cost": "Free",
+      "number_of_people": 80
+    },
+    {
+      "id": 5,
+      "day": "20",
+      "month": "Sep",
+      "title": "VAHS Community Yarns",
+      "location": "Location C",
+      "time": "6:00 PM",
+      "description": "Short description of the event C.",
+      "url": "https://www.eventbrite.com.au/e/vahs-community-yarns-fitzroy-tickets-954446764967?aff=ebdssbdestsearch&keep_tld=1",
+      "cost": "Free",
+      "number_of_people": 80
+    }
+]

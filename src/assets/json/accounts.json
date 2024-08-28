@@ -1,4 +1,8 @@
 [
     {"email": "admin@example.com", "password": "Admin123", "role": "admin","name":"Admin" },
-    {"email": "user@example.com", "password": "User123", "role": "general user", "name":"Linh"}
+    {"email": "user@example.com", "password": "User123", "role": "general user", "name":"Linh", "rating": 5, "comment":"HealingCountry has been a wonderful experience. The resources provided are invaluable."},
+    {"email": "haha@example.com", "password": "Haha123", "role": "general user", "name":"Haha", "rating": 3, "comment":"The community and support have been exceptional. Highly recommend!"},
+    {"email": "haha1@example.com", "password": "Haha1235", "role": "general user", "name":"Hehe", "rating": 3, "comment":"The community and support have been exceptional. Highly recommend!"},
+    {"email": "haha2@example.com", "password": "Haha1234", "role": "general user", "name":"Hihi", "rating": 4, "comment":"The community and support have been exceptional. Highly recommend!"},
+    {"email": "haha3@example.com", "password": "Haha1234", "role": "general user", "name":"Hihi", "rating": 4, "comment":"The community and support have been exceptional. Highly recommend!"}
 ]

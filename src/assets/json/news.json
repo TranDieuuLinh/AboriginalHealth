@@ -1,0 +1,39 @@
+[
+    {
+      "imgUrl": "src/assets/article1.png",
+      "title": "Indigenous women say they've not been properly consulted on violence prevention review",
+      "url": "https://www.abc.net.au/news/2024-08-23/rapid-review-violence-against-women-children-indigenous-experts/104258588"
+    },
+    {
+      "imgUrl": "src/assets/article1.png",
+      "title": "Cultural determinants of health for Aboriginal and Torres Strait Islander people",
+      "url": "https://equityhealthj.biomedcentral.com/articles/10.1186/s12939-021-01514-2"
+    },
+    {
+        "imgUrl": "src/assets/article2.png",
+        "title": "Cultural determinants of health for Aboriginal and Torres Strait Islander people",
+        "url": "https://equityhealthj.biomedcentral.com/articles/10.1186/s12939-021-01514-2"
+    },
+    {
+    "imgUrl": "src/assets/article6.png",
+    "title": "Cultural determinants of health for Aboriginal and Torres Strait Islander people",
+      "span": 2,
+      "url": "https://equityhealthj.biomedcentral.com/articles/10.1186/s12939-021-01514-2"
+    },
+    {
+        "imgUrl": "src/assets/article5.jpg",
+        "title": "Cultural determinants of health for Aboriginal and Torres Strait Islander people",
+        "url": "https://equityhealthj.biomedcentral.com/articles/10.1186/s12939-021-01514-2"
+    },
+    {
+        "imgUrl": "src/assets/article4.jpg",
+        "title": "Cultural determinants of health for Aboriginal and Torres Strait Islander people",
+        "url": "https://equityhealthj.biomedcentral.com/articles/10.1186/s12939-021-01514-2"
+    },
+    {
+        "imgUrl": "src/assets/article3.jpg",
+        "title": "Cultural determinants of health for Aboriginal and Torres Strait Islander people",
+          "span": 2,
+          "url": "https://equityhealthj.biomedcentral.com/articles/10.1186/s12939-021-01514-2"
+        }
+  ]

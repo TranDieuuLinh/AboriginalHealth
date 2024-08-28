@@ -1,24 +1,47 @@
 <template>
-  <div class="flex flex-col min-h-screen">
+  <!-- Typing Effect -->
+  <div
+    ref="typedElement"
+    v-show="!showIntro"
+    :class="{'animate-up': isAnimating}"
+    class="flex flex-col items-center justify-center min-h-screen px-6 md:px-12 bg-black text-center cursor-pointer transition-opacity duration-200"
+  >
+    <p class="text-md md:text-xl font-light mb-8 max-w-2xl text-gray-100 typing"></p>
+    <button 
+      v-if="showButton" 
+      @click="arrowAnimation" 
+      :class="{'animate-up': isAnimating}"
+      class="mt-4 py-2 px-4 rounded-full text-3xl bg-white text-red-700"
+    >
+      ↑
+    </button>
+  </div>
+
+  <div v-if="showIntro" class="flex flex-col min-h-screen">
     <!-- Navbar -->
-    <div v-if="showNavbar" class="sticky top-0 w-full flex flex-row justify-between items-center px-8 py-5 bg-black text-neutral-200 z-10">
+    <div v-if="showNavbar" class="bg-black fixed w-full text-[#e6e6e6] flex flex-row justify-between items-center px-8 py-5  z-20 ">
       <span class="flex flex-row gap-2.5">
-        <RouterLink to="/" class="hover:text-gray-600 font-semibold logoTitle">HealingCountry</RouterLink>
+        <RouterLink to="/" class="hover:text-gray-600 font-thin logoTitle">HealingCountry</RouterLink>
       </span>
 
-      <span v-if="displayUserContent"  class="gap-3 flex flex-row">
+      <span v-if="displayAdminContent"><button @click="logout" class=" text-red-500 flex items-center">Log out</button></span>
+      <span v-else>
+        <span v-if="displayUserContent" class="gap-3 flex flex-row items-center">
         <RouterLink to="/" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">HOME</RouterLink>
         <i class="fas fa-bars mt-0.5 text-xl cursor-pointer" @click="toggleSidebar"></i>
       </span>
-      <span v-else class="flex flex-row gap-2.5">
+      <span v-else class="flex flex-row gap-4 items-center">
         <RouterLink to="/login" class="hover:text-gray-600" active-class="text-stone-600">Login</RouterLink>
         <RouterLink to="/signup" class="hover:text-gray-600" active-class="text-stone-600">Signup</RouterLink>
+        <i class="fas fa-bars mt-0.5 text-xl cursor-pointer" @click="toggleSidebar"></i>
       </span>
+      </span>
+      
     </div>
 
     <!-- Sidebar -->
-    <div :class="sidebarClass" class="fixed top-0 right-0 w-60 h-full bg-black text-white z-20">
-      <button @click="toggleSidebar" class="absolute top-2 right-2 text-white text-2xl">&times;</button>
+    <div :class="sidebarClass" class="fixed top-0 right-0 w-60 h-full bg-black text-white z-40">
+      <button @click="toggleSidebar" class="absolute top-2 right-2 text-2xl">&times;</button>
       <div class="p-4">
         <div class="flex flex-col items-center my-16">
           <p class="text-xl font-semibold">{{ userName }}</p>
@@ -26,12 +49,12 @@
           <p class="text-gray-400">{{ userEmail }}</p>
         </div>
         <div>
-          <ul>
-            <li><RouterLink to="/events" @click="toggleSidebar" class="hover:text-gray-400"> <i class="fas fa-calendar-alt mr-2"></i> Events</RouterLink></li>
-            <li><RouterLink to="/fundraising" @click="toggleSidebar" class="hover:text-gray-400"><i class="fas fa-hand-holding-heart mr-2"></i>Fundraising</RouterLink></li>
-            <li><RouterLink to="/health" @click="toggleSidebar" class="hover:text-gray-400"><i class="fas fa-medkit mr-2"></i>Health</RouterLink></li>
-            <li><button @click="showReviewBox = true" class="hover:text-gray-400 ml-2 mt-4"><i class="fas fa-star-half-alt mr-2"></i>Rate Us</button></li>
-            <li><button @click="logout" class="ml-3 mt-5 text-red-500"><i class="fas fa-sign-out-alt mr-2"></i>Log out</button></li>
+          <ul class="space-y-2">
+            <li><RouterLink to="/newsEvents" @click="toggleSidebar" class="hover:text-gray-400 flex items-center ml-3 mt-5"><i class="fas fa-calendar-alt mr-2"></i> News & Events</RouterLink></li>
+            <li><RouterLink to="/fundraising" @click="toggleSidebar" class="hover:text-gray-400 flex items-center ml-3 mt-5"><i class="fas fa-hand-holding-heart mr-2"></i> Fundraising</RouterLink></li>
+            <li><RouterLink to="/about" @click="toggleSidebar" class="hover:text-gray-400 flex items-center ml-3 mt-5"><i class="fas fa-info-circle mr-2"></i> About Us</RouterLink></li>
+            <li><button @click="showReviewBox = true" class="hover:text-gray-400 flex items-center ml-3 mt-5"><i class="fas fa-star-half-alt mr-2"></i> Rate Us</button></li>
+            <li v-if="displayUserContent"><button @click="logout" class="ml-3 mt-5 text-red-500 flex items-center"><i class="fas fa-sign-out-alt mr-2"></i> Log out</button></li>
           </ul>
         </div>
       </div>
@@ -40,9 +63,8 @@
     <!-- Review Box -->
     <ReviewBox v-show="showReviewBox" @close="showReviewBox = false" />
 
-
     <!-- Main content area -->
-    <RouterView class="flex-1" />
+    <RouterView class="p-0 m-0"/>
   </div>
 </template>
 
@@ -51,41 +73,75 @@ import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import '@fortawesome/fontawesome-free/css/all.css';
 import ReviewBox from './components/ReviewBox.vue';
+import Typed from 'typed.js';
 
 const route = useRoute();
 const router = useRouter();
-const userRole = ref('guest');
+const userRole = ref('Guest');
 const showSidebar = ref(false);
 const userName = ref(' ');
 const userEmail = ref(' ');
 const showReviewBox = ref(false);
+const showIntro = ref(false);
+const showButton = ref(false);
+const isAnimating = ref(false); 
+const typedElement = ref(null);
 
 const showNavbar = computed(() => {
   return route.path !== '/signup' && route.path !== '/login';
 });
 
 onMounted(() => {
-  userRole.value = localStorage.getItem('userRole') || 'guest';
+  userRole.value = localStorage.getItem('userRole') || 'Guest';
   userName.value = localStorage.getItem('userName');
   userEmail.value = localStorage.getItem('userEmail');
+
+  const hasShownTypingEffect = localStorage.getItem('hasShownTypingEffect');
+  if (hasShownTypingEffect) {
+    showIntro.value = true;
+  } else {
+    const options = {
+      strings: ['From 2020 to 2022, First Nations Australians faced an 8.8-year life expectancy gap. Males lived 71.9 years and females 75.6 years—let’s close this gap together.'],
+      typeSpeed: 20,
+      onComplete: () => {
+        showButton.value = true;
+        localStorage.setItem('hasShownTypingEffect', 'true');
+      }
+    };
+    new Typed(typedElement.value.querySelector('.typing'), options);
+  }
 });
 
+const arrowAnimation = () => {
+  isAnimating.value = true; // Start the first animation
+
+  setTimeout(() => {
+    showIntro.value = true;  
+    isAnimating.value = false; 
+  }, 2000); 
+};
+
 const displayUserContent = computed(() => {
-  return userRole.value === 'admin' || userRole.value === 'general user';
+  return  userRole.value === 'general user';
+});
+
+const displayAdminContent = computed(() => {
+  return  userRole.value === 'admin';
 });
 
 const logout = () => {
-  userRole.value = 'guest';
   localStorage.removeItem('userRole');
-  router.push('/');
+  localStorage.removeItem('userName');
+  localStorage.removeItem('userEmail');
+  router.push('/').then(() =>{router.go(0)});
 };
 
 const toggleSidebar = () => {
   showSidebar.value = !showSidebar.value;
 };
 
-const sidebarClass = computed(() =>{
-  return showSidebar.value? 'sidebar-open sidebar' : 'sidebar'
+const sidebarClass = computed(() => {
+  return showSidebar.value ? 'transform translate-x-0' : 'transform translate-x-full';
 });
 </script>
 
@@ -95,21 +151,21 @@ const sidebarClass = computed(() =>{
   font-size: 20px;
 }
 
-.sidebar {
-  transition: transform 0.3s ease;
-  transform: translateX(100%);
+/* First Animation - Moving up */
+@keyframes flyUp {
+  from {
+    transform: translateY(0);
+    opacity: 1; /* Keep consistent opacity */
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 1; /* No fade */
+  }
 }
 
-.sidebar-open {
-  transform: translateX(0%);
-}
-
-
-
-.sidebar a {
-  text-decoration: none;
-  color: white;
-  display: block;
-  padding: 10px;
+.animate-up {
+  animation: flyUp 2s ease-in-out forwards; /* Smooth transition */
+  filter: none;
+  transition: none;
 }
 </style>

@@ -6,8 +6,8 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        rowdies: ['Rowdies', 'sans-serif'],
+      gridColumn: {
+        'span-2': 'span 2 / span 2',
       },
     },
   },
