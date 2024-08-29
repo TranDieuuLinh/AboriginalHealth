@@ -24,7 +24,7 @@
         <RouterLink to="/" class="hover:text-gray-600 font-thin logoTitle">HealingCountry</RouterLink>
       </span>
 
-      <span v-if="displayAdminContent"><button @click="logout" class=" text-red-500 flex items-center">Log out</button></span>
+      <span v-if="displayAdminContent "><button @click="logout" class=" text-red-500 flex items-center">Log out</button></span>
       <span v-else>
         <span v-if="displayUserContent" class="gap-3 flex flex-row items-center">
         <RouterLink to="/" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">HOME</RouterLink>
@@ -122,7 +122,7 @@ const arrowAnimation = () => {
 };
 
 const displayUserContent = computed(() => {
-  return  userRole.value === 'general user';
+  return  userRole.value === 'user';
 });
 
 const displayAdminContent = computed(() => {

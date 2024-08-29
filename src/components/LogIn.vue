@@ -37,31 +37,46 @@
   <script setup>
   import { ref, computed } from 'vue';
   import { useRouter } from 'vue-router';
-  import accounts from '../assets/json/accounts.json';
+  import { db } from '../../firebaseConfig.js';
+  import { doc, getDoc } from 'firebase/firestore';
   
   const email = ref('');
   const password = ref('');
   const loginError = ref('');
   
   const router = useRouter();
-  
-  const user = computed(() => {
-    return accounts.find((u) => u.email === email.value && u.password === password.value);
-  });
-  
-  const login = () => {
-    if (user.value) {
-      localStorage.setItem('userRole', user.value.role);
-      localStorage.setItem('userName', user.value.name);
-      localStorage.setItem('userEmail', user.value.email);
 
-      const path = user.value.role === 'admin'? '/adminHome' : '/'
-      router.push(path).then(() =>{router.go(0)})
-      
+
+  const login = async () => {
+  try {
+    // Create a document reference
+    const docRef = doc(db, 'usersAccount', email.value); 
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const docData = docSnap.data();
+      if (docData.password === password.value) {
+        localStorage.setItem('userRole', docData.role);
+        localStorage.setItem('userName', docData.name);
+        localStorage.setItem('userEmail', docData.email);
+
+        const routePath = docData.role === 'admin' ? '/adminHome' : '/';
+        router.push(routePath).then(() => {
+          router.go(0); // Refresh the page
+        });
+      } else {
+        loginError.value = 'Invalid email or password';
+      }
     } else {
-      loginError.value = 'Invalid email or password';
+      loginError.value = 'User does not exist!';
     }
-  };
+  } catch (error) {
+    console.error('Error getting document: ', error);
+    loginError.value = 'An error occurred while logging in. Please try again.';
+  }
+};
+
+
   </script>
   
   <style scoped>

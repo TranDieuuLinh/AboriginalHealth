@@ -57,12 +57,15 @@
   <script setup>
     import { db } from '../../firebaseConfig.js';
     import { ref } from 'vue';
-    import { doc, setDoc } from 'firebase/firestore';
+    import { doc, setDoc, getDoc } from 'firebase/firestore';
+    import DOMPurify from 'dompurify';
 
-
+    const sanitizeInput = (input) => {
+        return DOMPurify.sanitize(input);
+    };
 
     const validatePassword = (blur) => {
-        const password = formData.value.password;
+        let password = sanitizeInput(formData.value.password);
         const minLength = 8;
         const hasUpperCase = /[A-Z]/.test(password);
         const hasLowerCase = /[a-z]/.test(password);
@@ -76,11 +79,12 @@
         } else {
             errors.value.password = null; 
         }
-        };
+        formData.value.password = password; 
+    };
 
 
     const validateFullName = (blur) => {
-        const fullName = formData.value.fullName; 
+        let fullName = sanitizeInput(formData.value.fullName);
         const hasUpperCase = /[A-Z]/.test(fullName);
 
         if (!hasUpperCase) {
@@ -88,7 +92,19 @@
         } else {
             errors.value.fullName = null; 
         }
+        formData.value.fullName = fullName; 
     };
+
+    const validateEmail = () => {
+        let email = sanitizeInput(formData.value.email);
+        formData.value.email = email;  
+    };
+
+    const validateRole = () => {
+        let role = sanitizeInput(formData.value.role);
+        formData.value.role = role;  
+    };
+
 
     const formData = ref({
         password:'',
@@ -99,31 +115,42 @@
 
     const errors = ref({
         password:null,
-        fullName:null
+        fullName:null,
+        email:null
     });
 
     const handleSubmission = async () => {
-        validatePassword(true);
-        validateFullName(true);
+    validatePassword(true);
+    validateFullName(true);
+    validateEmail();
+    validateRole();
 
-        if (!errors.value.password && !errors.value.fullName && formData.value.email !== '' && formData.value.password !== '') {
-            try {
-            const userDocRef = doc(db, 'usersAccount', formData.value.email); // Create a reference with email as the ID
-            await setDoc(userDocRef, {
-                email: formData.value.email,
-                name: formData.value.fullName,
-                password: formData.value.password,
-                role: formData.value.role,
-                comment: "",
-                rating: ""
-            });
-            console.log("Document written with ID: ", formData.value.email);
-            clearForm();
-            } catch (e) {
-            console.error("Error adding document: ", e);
+    if (!errors.value.password && !errors.value.fullName && formData.value.email !== '' && formData.value.password !== '') {
+        try {
+            const userDocRef = doc(db, 'usersAccount', formData.value.email);
+            const userDoc = await getDoc(userDocRef);
+
+            if (userDoc.exists()) {
+                alert("Email already exists. Please use a different email.");
+            } else {
+                await setDoc(userDocRef, {
+                    email: formData.value.email,
+                    name: formData.value.fullName,
+                    password: formData.value.password,
+                    role: formData.value.role,
+                    comment: "",
+                    rating: ""
+                });
+                console.log("Document written with ID: ", formData.value.email);
+                alert("Sign Up Successfully🌱")
+                clearForm();
             }
+        } catch (e) {
+            console.error("Error adding document: ", e);
         }
-        };
+    }
+};
+
 
     const clearForm=() =>{
         formData.value={

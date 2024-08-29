@@ -24,9 +24,10 @@
   
   <script setup>
   import { ref } from 'vue';
+  import { db } from '../../firebaseConfig.js';
+  import { doc,  updateDoc } from 'firebase/firestore';
   
   const emit = defineEmits(['close']);
-  
   const rating = ref(0);
   const comment = ref('');
   
@@ -42,9 +43,25 @@
     return star <= rating.value ? 'text-yellow-400 text-4xl' : 'text-gray-300 text-4xl';
   };
   
-  const submitReview = () => {
+  const submitReview = async () =>  {
     if (rating.value && comment.value) {
+      
+      try {
+            const userDocRef = doc(db, 'usersAccount', localStorage.getItem('userEmail')); 
+            await updateDoc(userDocRef, {
+                comment: comment.value,
+                rating: rating.value
+            });
+            alert("Your review has been successfully submitted✅")
+            console.log("Document written with ID: ", localStorage.getItem('userRole'));
+            rating.value = "";
+            comment.value = "";
+            } catch (e) {
+            console.error("Error adding document: ", e);
+            }
       emit('close');
+    } else {
+      alert("❗️Please put in your star and comment before submiting❗️")
     }
   };
   

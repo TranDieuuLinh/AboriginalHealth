@@ -1,10 +1,36 @@
 <script setup>
-import accounts from '../assets/json/accounts.json';
+// import accounts from '../assets/json/accounts.json';
+import { onMounted } from 'vue';
+import { ref } from 'vue';
+const accounts = ref([]);
+import { db } from '../../firebaseConfig.js';
+import { query, getDocs, collection, where } from '@firebase/firestore';
+
+const getAccounts = async () => {
+  try {
+
+    const q = collection(db, "usersAccount");
+
+    const users = [];
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      users.push(doc.data())
+    });
+    accounts.value = users;
+   
+  } catch (error) {
+    console.error('Error getting document: ', error);
+  }
+};
+
+onMounted(() =>{
+  getAccounts();
+});
 </script>
 
 <template>
   <main class="p-10 bg-gray-100 min-h-screen text-center">
-    <h1 class="text-2xl font-mono my-3 pt-10 text-gray-800">User Data Table</h1>
+    <h1 class="text-2xl font-mono my-5 pt-10 text-gray-800">User Data Table</h1>
     <div class="overflow-x-auto">
       <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg">
         <thead class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
@@ -22,8 +48,8 @@ import accounts from '../assets/json/accounts.json';
             <td class="px-8 py-4 text-gray-800 border-b">{{ user.name }}</td>
             <td class="px-8 py-4 text-gray-800 border-b">{{ user.email }}</td>
             <td class="px-8 py-4 text-gray-800 border-b">{{ user.role }}</td>
-            <td class="px-8 py-4 text-gray-800 border-b" v-if="user.rating !== undefined">{{ user.rating }}</td>
-            <td class="px-8 py-4 text-gray-800 border-b" v-if="user.comment !== undefined">{{ user.comment }}</td>
+            <td class="px-8 py-4 text-gray-800 border-b">{{ user.rating }}</td>
+            <td class="px-8 py-4 text-gray-800 border-b">{{ user.comment }}</td>
           </tr>
         </tbody>
       </table>
