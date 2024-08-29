@@ -55,8 +55,11 @@
   </template>
   
   <script setup>
+    import { db } from '../../firebaseConfig.js';
     import { ref } from 'vue';
-    const submittedCards = ref([]);
+    import { doc, setDoc } from 'firebase/firestore';
+
+
 
     const validatePassword = (blur) => {
         const password = formData.value.password;
@@ -99,13 +102,28 @@
         fullName:null
     });
 
-    const handleSubmission=() =>{
-        validatePassword(true),
-        validateFullName(true)
-        if( !errors.value.password && !errors.value.fullName && formData.value.email!=='' && formData.value.password!=='' ){
+    const handleSubmission = async () => {
+        validatePassword(true);
+        validateFullName(true);
+
+        if (!errors.value.password && !errors.value.fullName && formData.value.email !== '' && formData.value.password !== '') {
+            try {
+            const userDocRef = doc(db, 'usersAccount', formData.value.email); // Create a reference with email as the ID
+            await setDoc(userDocRef, {
+                email: formData.value.email,
+                name: formData.value.fullName,
+                password: formData.value.password,
+                role: formData.value.role,
+                comment: "",
+                rating: ""
+            });
+            console.log("Document written with ID: ", formData.value.email);
             clearForm();
+            } catch (e) {
+            console.error("Error adding document: ", e);
+            }
         }
-    };
+        };
 
     const clearForm=() =>{
         formData.value={

@@ -18,19 +18,19 @@
           </div>
 
 
-          <div class="px-4 md:px-8 lg:px-40 py-20">
+          <div class="px-10 md:px-8 lg:px-40 py-20">
   <div class="flex justify-center items-center">
-    <div class="bg-[#f1e6d5] p-6 md:p-10 lg:p-10 rounded-3xl border-b-4 border-[#824640]">
-      <p class="text-center font-semibold text-2xl md:text-3xl lg:text-4xl font-serif mb-5 text-gray-800">Highlight Articles</p>
-      <div class="grid grid-cols-1 gap-4 md:gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <div class="bg-[#F1F1F1] p-20 rounded-3xl border-b-2 border-[#422826]">
+      <p class="text-center font-semibold text-2xl md:text-3xl lg:text-4xl font-serif mb-8 text-gray-800">Highlight Articles</p>
+      <div class="grid grid-cols-1  md:gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <a
           v-for="(item, index) in limitedNews"
           :key="index"
           :href="item.url"
-          :class="{'col-span-1': item.span !== 2, 'lg:col-span-2': item.span === 2}"
-          class="text-[#642E08] p-4 md:p-6 bg-[#f1e6d5] rounded-lg shadow-lg border-b-2 border-[#824640] flex flex-col items-center justify-center text-md font-bold transition-colors duration-300"
+          :class="{'col-span-1': item.span == 1, 'lg:col-span-2': item.span === 2, 'lg:col-span-3': item.span === 3}"
+          class="text-[#000000] hover:bg-gray-300 text-md font-serif p-4 md:p-6 bg-[#F1F1F1] rounded-lg shadow-lg border-b-2 border-[#422826] flex flex-col  justify-center  transition-colors duration-300"
           target="_blank">
-          <div class="flex items-center justify-center overflow-hidden border-b-4 border-[#824640] rounded-md mb-4 w-full h-48">
+          <div class="flex items-center justify-center overflow-hidden border-b-2 border-[#422826] rounded-md mb-4 w-full h-48">
             <img :src="item.imgUrl" :alt="item.title" class=" object-cover w-full h-full rounded-md" />
           </div>
           <p class="text-center">{{ item.title }}</p>
@@ -172,5 +172,5 @@ const averageTotalReviews = (function() {
 })();
 
 const limitedEvents = computed(() => events.slice(0,3));
-const limitedNews = computed(() => news.slice(0, 5));
+const limitedNews = computed(() => news.slice(0, 3));
 </script>
