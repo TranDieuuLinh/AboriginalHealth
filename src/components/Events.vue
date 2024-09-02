@@ -9,7 +9,7 @@ import events from '../assets/json/events.json';
       <p class="font-semibold text-xl font-serif my-5">Events</p>
       <div class="relative w-full">
         <div class="relative z-10">
-          <div v-for="event in events" :key="event.id" class="mb-8 p-6 rounded-lg shadow-lg border  relative">
+          <div v-for="event in events" :key="event.id" class="mb-8 p-6 rounded-lg shadow-lg border  relative transition-transform transform hover:scale-105">
             <div class="absolute inset-0 rounded-lg"></div>
             <div class="relative z-10">
               <div class="flex items-center justify-between">

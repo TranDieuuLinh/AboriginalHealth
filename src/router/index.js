@@ -4,6 +4,8 @@ import HomeView from '../views/HomeView.vue'
 import LogInView from '../views/LogInView.vue'
 import AdminHomeView from '../views/AdminHomeView.vue'
 import NewsEventsView from '../views/NewsEventsView.vue'
+import FundraisingView from '../views/FundraisingView.vue'
+import AddNewsView from '../views/AddNewsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +34,16 @@ const router = createRouter({
       path:'/newsEvents',
       name:'newsEvents',
       component:NewsEventsView
+    },
+    {
+      path:'/fundraising',
+      name:'fundraising',
+      component:FundraisingView
+    },
+    {
+      path:'/addNews',
+      name:'addNews',
+      component:AddNewsView
     },
   ]
 })

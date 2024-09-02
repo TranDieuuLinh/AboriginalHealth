@@ -1,8 +1,8 @@
 <template>
-  <div class="relative w-screen h-screen">
+  <div >
     <!-- Hero Section -->
-    <div class="relative w-screen h-full">
-      <img src="../assets/attentionHomeImg.png" alt="Image" class="absolute w-full h-full object-cover" />
+    <div class="relative  w-screen h-screen">
+      <img src="../assets/attentionHomeImg.png" alt="Image" class="absolute w-full h-full object-cover " />
       <div class="absolute inset-0 flex flex-col items-center justify-between p-4">
         <div class="flex flex-col items-center justify-center flex-grow mt-40">
           <p class="text-white text-center font-popping font-black text-4xl md:text-5xl">

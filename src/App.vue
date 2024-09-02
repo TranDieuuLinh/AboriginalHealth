@@ -1,72 +1,104 @@
 <template>
-  <!-- Typing Effect -->
-  <div
-    ref="typedElement"
-    v-show="!showIntro"
-    :class="{'animate-up': isAnimating}"
-    class="flex flex-col items-center justify-center min-h-screen px-6 md:px-12 bg-black text-center cursor-pointer transition-opacity duration-200"
-  >
-    <p class="text-md md:text-xl font-light mb-8 max-w-2xl text-gray-100 typing"></p>
-    <button 
-      v-if="showButton" 
-      @click="arrowAnimation" 
+  <div class="flex flex-col min-h-screen">
+    <!-- Typing Effect -->
+    <div
+      ref="typedElement"
+      v-show="!showIntro"
       :class="{'animate-up': isAnimating}"
-      class="mt-4 py-2 px-4 rounded-full text-3xl bg-white text-red-700"
+      class="flex flex-col items-center justify-center flex-grow px-6 md:px-12 bg-black text-center cursor-pointer transition-opacity duration-200"
     >
-      ↑
-    </button>
-  </div>
-
-  <div v-if="showIntro" class="flex flex-col min-h-screen">
-    <!-- Navbar -->
-    <div v-if="showNavbar" class="bg-black fixed w-full text-[#e6e6e6] flex flex-row justify-between items-center px-8 py-5  z-20 ">
-      <span class="flex flex-row gap-2.5">
-        <RouterLink to="/" class="hover:text-gray-600 font-thin logoTitle">HealingCountry</RouterLink>
-      </span>
-
-      <span v-if="displayAdminContent "><button @click="logout" class=" text-red-500 flex items-center">Log out</button></span>
-      <span v-else>
-        <span v-if="displayUserContent" class="gap-3 flex flex-row items-center">
-        <RouterLink to="/" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">HOME</RouterLink>
-        <i class="fas fa-bars mt-0.5 text-xl cursor-pointer" @click="toggleSidebar"></i>
-      </span>
-      <span v-else class="flex flex-row gap-4 items-center">
-        <RouterLink to="/login" class="hover:text-gray-600" active-class="text-stone-600">Login</RouterLink>
-        <RouterLink to="/signup" class="hover:text-gray-600" active-class="text-stone-600">Signup</RouterLink>
-        <i class="fas fa-bars mt-0.5 text-xl cursor-pointer" @click="toggleSidebar"></i>
-      </span>
-      </span>
-      
+      <p class="text-md md:text-xl font-light mb-8 max-w-2xl text-gray-100 typing"></p>
+      <button 
+        v-if="showButton" 
+        @click="arrowAnimation" 
+        :class="{'animate-up': isAnimating}"
+        class="mt-4 py-2 px-4 rounded-full text-3xl bg-white text-red-700"
+      >
+        ↑
+      </button>
     </div>
 
-    <!-- Sidebar -->
-    <div :class="sidebarClass" class="fixed top-0 right-0 w-60 h-full bg-black text-white z-40">
-      <button @click="toggleSidebar" class="absolute top-2 right-2 text-2xl">&times;</button>
-      <div class="p-4">
-        <div class="flex flex-col items-center my-16">
-          <p class="text-xl font-semibold">{{ userName }}</p>
-          <p class="text-gray-400">{{ userRole }}</p>
-          <p class="text-gray-400">{{ userEmail }}</p>
-        </div>
-        <div>
-          <ul class="space-y-2">
-            <li><RouterLink to="/newsEvents" @click="toggleSidebar" class="hover:text-gray-400 flex items-center ml-3 mt-5"><i class="fas fa-calendar-alt mr-2"></i> News & Events</RouterLink></li>
-            <li><RouterLink to="/fundraising" @click="toggleSidebar" class="hover:text-gray-400 flex items-center ml-3 mt-5"><i class="fas fa-hand-holding-heart mr-2"></i> Fundraising</RouterLink></li>
-            <li><RouterLink to="/about" @click="toggleSidebar" class="hover:text-gray-400 flex items-center ml-3 mt-5"><i class="fas fa-info-circle mr-2"></i> About Us</RouterLink></li>
-            <li><button @click="showReviewBox = true" class="hover:text-gray-400 flex items-center ml-3 mt-5"><i class="fas fa-star-half-alt mr-2"></i> Rate Us</button></li>
-            <li v-if="displayUserContent"><button @click="logout" class="ml-3 mt-5 text-red-500 flex items-center"><i class="fas fa-sign-out-alt mr-2"></i> Log out</button></li>
-          </ul>
+    <div v-if="showIntro">
+      <!-- Navbar -->
+      <div v-if="showNavbar" class="bg-black fixed w-full text-[#e6e6e6] flex flex-row justify-between items-center px-8 py-5 z-20 ">
+        <span class="flex flex-row gap-2.5">
+          <RouterLink to="/" class="hover:text-gray-600 font-thin logoTitle">HealingCountry</RouterLink>
+        </span>
+        <span class="flex flex-row gap-4" v-if="displayAdminContent">
+          <RouterLink to="/adminHome" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">Home</RouterLink>
+          <RouterLink to="/addNews" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">News</RouterLink>
+          <button @click="logout" class="text-red-500 flex items-center">Logout</button>
+        </span>
+        <span v-else>
+          <span v-if="displayUserContent" class="gap-3 flex flex-row items-center">
+            <RouterLink to="/" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">HOME</RouterLink>
+            <i class="fas fa-bars mt-0.5 text-xl cursor-pointer" @click="toggleSidebar"></i>
+          </span>
+          <span v-else class="flex flex-row gap-4 items-center">
+            <RouterLink to="/login" class="hover:text-gray-600" active-class="text-stone-600">Login</RouterLink>
+            <RouterLink to="/signup" class="hover:text-gray-600" active-class="text-stone-600">Signup</RouterLink>
+            <i class="fas fa-bars mt-0.5 text-xl cursor-pointer" @click="toggleSidebar"></i>
+          </span>
+        </span>
+      </div>
+
+      <!-- Sidebar -->
+      <div :class="sidebarClass" class="fixed top-0 right-0 w-60 h-full bg-black text-white z-40">
+        <button @click="toggleSidebar" class="absolute top-2 right-2 text-2xl">&times;</button>
+        <div class="p-4">
+          <div class="flex flex-col items-center my-16">
+            <p class="text-xl font-semibold">{{ userName }}</p>
+            <p class="text-gray-400">{{ userRole }}</p>
+            <p class="text-gray-400">{{ userEmail }}</p>
+          </div>
+          <div>
+            <ul class="space-y-2">
+              <li><RouterLink to="/" @click="toggleSidebar" class="hover:text-gray-400 flex items-center ml-5 mt-5"><i class="fas fa-home mr-2"></i> Home</RouterLink></li>
+              <li><RouterLink to="/newsEvents" @click="toggleSidebar" class="hover:text-gray-400 flex items-center ml-5 mt-5"><i class="fas fa-calendar-alt mr-2"></i> News & Events</RouterLink></li>
+              <li><RouterLink to="/fundraising" @click="toggleSidebar" class="hover:text-gray-400 flex items-center ml-5 mt-5"><i class="fas fa-hand-holding-heart mr-2"></i> Fundraising</RouterLink></li>
+              <li><button @click="showReviewBox = true" class="hover:text-gray-400 flex items-center ml-5 mt-5"><i class="fas fa-star-half-alt mr-2"></i> Rate Us</button></li>
+              <li v-if="displayUserContent"><button @click="logout" class="ml-5 mt-5 text-red-500 flex items-center"><i class="fas fa-sign-out-alt mr-2"></i> Log out</button></li>
+            </ul>
+          </div>
         </div>
       </div>
+
+      <!-- Review Box -->
+      <ReviewBox v-show="showReviewBox" @close="showReviewBox = false" />
+
+      <!-- Main content area -->
+      <main class="flex-grow">
+        <RouterView class="p-0 m-0"/>
+      </main>
     </div>
 
-    <!-- Review Box -->
-    <ReviewBox v-show="showReviewBox" @close="showReviewBox = false" />
+    <!-- Footer -->
+    <footer class="bg-black text-[#fff] py-4">
+  <div class="w-full mx-auto max-w-screen-xl p-4 flex justify-between items-center">
+    <div class="text-sm">
+      © 2024 Healing Country. All Rights Reserved.
+    </div>
+    <div class="flex items-center space-x-6">
+      <a href="#" class="hover:underline">Contact: </a>
+      <div class="text-sm flex space-x-4">
+        <p class="flex items-center">
+          <i class="fas fa-envelope mr-2"></i>
+          <a href="mailto:info@example.com" class="hover:underline">info@example.com</a>
+        </p>
+        <p class="flex items-center">
+          <i class="fas fa-phone-alt mr-2"></i>
+          <a href="tel:+1234567890" class="hover:underline">+1 (234) 567-890</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
 
-    <!-- Main content area -->
-    <RouterView class="p-0 m-0"/>
+
   </div>
 </template>
+
+
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';

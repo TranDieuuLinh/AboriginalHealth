@@ -13,9 +13,9 @@
           v-for="(item, index) in news"
           :key="index"
           :href="item.url"
-          class="text-[#642E08] p-4 md:p-6  rounded-lg shadow-lg flex flex-col text-md font-bold transition-colors duration-300"
+          class="text-[#642E08] p-4 md:p-6  rounded-lg shadow-lg flex flex-col text-md hover:bg-[#b89d77]"
           target="_blank">
-          <div class="flex  overflow-hidden rounded-md mb-4 w-full h-48">
+          <div class="flex  overflow-hidden rounded-md mb-4 w-full h-48 ">
             <img :src="item.imgUrl" :alt="item.title" class="object-cover w-full h-full rounded-md" />
           </div>
           <p class="text-center">{{ item.title }}</p>
