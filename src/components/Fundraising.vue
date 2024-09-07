@@ -23,6 +23,7 @@
 
           <div class="mt-10 rounded-xl overflow-hidden mx-auto" style="width: 60%;">
             <!-- Highlight Picture Section -->
+            <hr class="my-10 border-t-1 border-gray-600" />
             <div class="relative">
               <img src="../assets/successStory.jpg" alt="Highlight" class=" object-cover">
               <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white p-4">

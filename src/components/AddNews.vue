@@ -16,7 +16,7 @@
           <label for="articleUrl"  class="text-lg font-semibold">Article Url:</label>
           <input type="text" id="articleUrl" placeholder="Enter Article Url" v-model="formData.articleUrl" class="w-full border rounded-md p-3 my-2"/>
         </div>
-        <div class="mb-5 flex justify-end max-w-md"><button type="submit" class="bg-black text-white p-3 rounded-lg  w-full" >Add</button></div>
+        <div class="mb-5 flex justify-end max-w-md"><button type="submit" class="bg-[#b89d77] text-white p-3 rounded-lg  w-full" >Add</button></div>
       </form>
     </div>
     <div class="flex-grow  mx-20 mt-10">
@@ -31,7 +31,7 @@
             <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Highlight</label>
           </div>
           <div class="flex flex-col justify-between mt-auto gap-2">
-            <div class="relative text-slate-200" v-if="each.isHighlighted">
+            <div class="relative text-white" v-if="each.isHighlighted">
               <select @change="handleSpanHighlight(each)" v-model="each.spanHighlight" class="block w-full p-2 pl-3 pr-10 text-sm bg-[#b89d77] border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200">
                 <option value="" disabled selected>Choose a highlight width</option>
                 <option v-for="span in [1, 2, 3]" :key="span" :value="span" :disabled="selectedSpan.includes(span)">

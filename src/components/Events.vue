@@ -1,5 +1,25 @@
 <script setup>
 import events from '../assets/json/events.json';
+import { ref, onMounted } from 'vue';
+import { collection, getDocs, setDoc, doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebaseConfig.js';
+  
+  const event = ref([]);
+
+  const fetchEvents = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, 'events'));
+    event.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    console.log('Fetched events:', event.value);
+  } catch (error) {
+    console.error('Error fetching events: ', error);
+  }
+};
+
+  
+  onMounted(() => {
+    fetchEvents();
+  });
 </script>
 
 <template>
@@ -9,7 +29,7 @@ import events from '../assets/json/events.json';
       <p class="font-semibold text-xl font-serif my-5">Events</p>
       <div class="relative w-full">
         <div class="relative z-10">
-          <div v-for="event in events" :key="event.id" class="mb-8 p-6 rounded-lg shadow-lg border  relative transition-transform transform hover:scale-105">
+          <div v-for="event in event" :key="event.id" class="mb-8 p-6 rounded-lg shadow-lg border border-gray-700 relative transition-transform transform hover:scale-105 bg-gray-800">
             <div class="absolute inset-0 rounded-lg"></div>
             <div class="relative z-10">
               <div class="flex items-center justify-between">
@@ -22,7 +42,7 @@ import events from '../assets/json/events.json';
                 <!-- Event Details -->
                 <div class="flex flex-col w-full p-2 ml-4">
                   <h3 class="text-2xl font-bold mb-2">
-                    <a :href="event.url" class="hover:underline underline">{{ event.title }}</a>
+                    <a :href="event.url" class="hover:underline underline text-yellow-300">{{ event.title }}</a>
                   </h3>
                   <!-- Location and Time on the Same Line -->
                   <div class="flex flex-row gap-5">

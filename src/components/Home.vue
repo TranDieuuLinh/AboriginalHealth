@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <!-- Hero Section -->
     <div class="relative  w-screen h-screen">
       <img src="../assets/attentionHomeImg.png" alt="Image" class="absolute w-full h-full object-cover " />
@@ -18,33 +18,34 @@
     </div>
 
     <!-- Highlight Articles Section -->
-    <div class="px-10 md:px-8 lg:px-40 py-20">
-      <div class="flex justify-center items-center">
-        <div class="bg-white shadow-lg rounded-lg p-20 border border-1 border-[#824640]">
-          <p class="text-center font-semibold text-2xl md:text-3xl lg:text-4xl font-serif mb-8 text-gray-800">
-            Highlight Articles
-          </p>
-          <div class="grid grid-cols-1 md:gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <a
-              v-for="(item, index) in limitedNews"
-              :key="index"
-              :href="item.url"
-              :class="{
-                'col-span-1': item.span == 1,
-                'lg:col-span-2': item.span === 2,
-                'lg:col-span-3': item.span === 3
-              }"
-              class="text-[#000000] hover:bg-[#b89d77] text-md font-serif p-4 md:p-6 bg-[#fefdfd] rounded-lg shadow-lg border-b-1 flex flex-col justify-center transition-colors duration-300"
-              target="_blank">
-              <div class="flex items-center justify-center overflow-hidden border-b-1 rounded-md mb-4 w-full h-48">
-                <img :src="item.imgUrl" :alt="item.title" class="object-cover w-full h-full rounded-md" />
-              </div>
-              <p class="text-center">{{ item.title }}</p>
-            </a>
-          </div>
-        </div>
+    <div class="flex flex-col justify-between mt-auto gap-2 p-8 md:p-12 lg:p-20">
+
+<div class="bg-white shadow-lg rounded-lg p-8 md:p-12 lg:p-16 border border-[#824640]">
+  <p class="text-center font-semibold text-xl md:text-2xl lg:text-3xl font-serif mb-8 text-gray-800">
+    Highlight Articles
+  </p>
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <a
+      v-for="(item, index) in articles"
+      :key="index"
+      :href="item.articleUrl"
+      :class="{
+        'col-span-1': item.spanHighlight === 1,
+        'lg:col-span-2': item.spanHighlight === 2,
+        'lg:col-span-3': item.spanHighlight === 3
+      }"
+      class="text-[#000000] hover:bg-[#b89d77] text-md font-serif p-4 md:p-6 bg-[#fefdfd] rounded-lg shadow-lg border-b-1 flex flex-col justify-between transition-colors duration-300"
+      target="_blank"
+    >
+      <div class="flex items-center justify-center overflow-hidden border-b-1 rounded-md mb-4 w-full h-36 ">
+        <img :src="item.imageUrl" :alt="item.title" class="object-cover w-full h-full rounded-md" />
       </div>
-    </div>
+      <p class="text-center font-semibold mt-2">{{ item.title }}</p>
+    </a>
+  </div>
+</div>
+</div>
+
 
     <!-- Upcoming Events Section -->
     <div class="bg-[#6e3e3a] w-screen px-10 py-20 flex flex-col items-center">
@@ -122,53 +123,75 @@
   </div>
 </template>
 
-
 <style scoped>
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
-
 </style>
+
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import events from '../assets/json/events.json';
-import news from '../assets/json/news.json';
 import { db } from '../../firebaseConfig.js';
-import { query, getDocs, collection, where } from '@firebase/firestore';
+import { query, getDocs, collection, where, onSnapshot } from '@firebase/firestore';
+
+const articles = ref([]);
+
+const getArticles = async () => {
+  try {
+    const article = [];
+    const articleDocRef = collection(db, 'articles');
+    const q = query(articleDocRef, where('spanHighlight', '>', 0));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      article.push(doc.data());
+    });
+    
+    console.log('Fetched articles:', article); 
+    articles.value = article;
+    
+  } catch (error) {
+    console.error('Error getting documents: ', error);
+    alert('Failed to get articles. ❌');
+  }
+};
+
 
 // Define reactive variables
 const generalUsers = ref([]);
+const averageTotalReviews = ref(0);
 
-// Fetch user comments from Firestore
-const usersComments = async () => {
-  try {
-    const q = query(
-      collection(db, "usersAccount"),
-      where("role", "==", "user"),
-      where("comment", "!=", "")
-    );
+// Fetch user comments from Firestore and update the average rating
+const usersComments = () => {
+  const q = query(
+    collection(db, 'usersAccount'),
+    where('role', '==', 'user'),
+    where('comment', '!=', '')
+  );
+
+  // Set up a real-time listener
+  onSnapshot(q, (querySnapshot) => {
     const users = [];
-    const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       users.push(doc.data());
     });
     generalUsers.value = users;
-  } catch (error) {
+
+    // Compute average rating after fetching the data
+    const totalRating = users.reduce((sum, user) => sum + parseFloat(user.rating || 0), 0);
+    averageTotalReviews.value = (totalRating / users.length).toFixed(1);
+  }, (error) => {
     console.error('Error getting documents: ', error);
-  }
+  });
 };
-
-onMounted(() => {
-  usersComments();
-});
-
-const averageTotalReviews = computed(() => {
-  if (generalUsers.value.length === 0) return 0;
-  const totalRating = generalUsers.value.reduce((sum, user) => sum + parseFloat(user.rating), 0);
-  return (totalRating / generalUsers.value.length).toFixed(1); // Format to one decimal place
-});
 
 // Limit the number of events and news articles displayed
 const limitedEvents = computed(() => events.slice(0, 3));
-const limitedNews = computed(() => news.slice(0, 3));
+
+// Call the function on component mount
+onMounted(() => {
+  usersComments();
+  getArticles();
+});
 </script>

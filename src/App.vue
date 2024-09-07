@@ -22,11 +22,12 @@
       <!-- Navbar -->
       <div v-if="showNavbar" class="bg-black fixed w-full text-[#e6e6e6] flex flex-row justify-between items-center px-8 py-5 z-20">
         <span class="flex flex-row gap-2.5">
-          <RouterLink to="/" class="hover:text-gray-600 font-thin logoTitle">HealingCountry</RouterLink>
+          <h1 class="font-thin logoTitle">HealingCountry</h1>
         </span>
         <span class="flex flex-row gap-4" v-if="displayAdminContent">
           <RouterLink to="/adminHome" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">Home</RouterLink>
           <RouterLink to="/addNews" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">News</RouterLink>
+          <RouterLink to="/addEvents" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">Events</RouterLink>
           <button @click="logout" class="text-red-500 flex items-center">Logout</button>
         </span>
         <span v-else>

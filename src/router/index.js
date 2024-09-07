@@ -6,6 +6,7 @@ import AdminHomeView from '../views/AdminHomeView.vue'
 import NewsEventsView from '../views/NewsEventsView.vue'
 import FundraisingView from '../views/FundraisingView.vue'
 import AddNewsView from '../views/AddNewsView.vue'
+import AddEventsView from '../views/AddEventsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
       path:'/addNews',
       name:'addNews',
       component:AddNewsView
+    },
+    {
+      path:'/addEvents',
+      name:'addEvents',
+      component:AddEventsView
     },
   ]
 })
