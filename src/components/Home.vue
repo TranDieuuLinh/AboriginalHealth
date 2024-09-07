@@ -158,12 +158,10 @@ const usersComments = async () => {
   }
 };
 
-// Initialize data on component mount
 onMounted(() => {
   usersComments();
 });
 
-// Compute average rating based on user reviews
 const averageTotalReviews = computed(() => {
   if (generalUsers.value.length === 0) return 0;
   const totalRating = generalUsers.value.reduce((sum, user) => sum + parseFloat(user.rating), 0);

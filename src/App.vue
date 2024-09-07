@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col min-h-screen">
+  <div class="flex flex-col h-screen">
     <!-- Typing Effect -->
     <div
       ref="typedElement"
@@ -20,7 +20,7 @@
 
     <div v-if="showIntro">
       <!-- Navbar -->
-      <div v-if="showNavbar" class="bg-black fixed w-full text-[#e6e6e6] flex flex-row justify-between items-center px-8 py-5 z-20 ">
+      <div v-if="showNavbar" class="bg-black fixed w-full text-[#e6e6e6] flex flex-row justify-between items-center px-8 py-5 z-20">
         <span class="flex flex-row gap-2.5">
           <RouterLink to="/" class="hover:text-gray-600 font-thin logoTitle">HealingCountry</RouterLink>
         </span>
@@ -67,30 +67,18 @@
       <ReviewBox v-show="showReviewBox" @close="showReviewBox = false" />
 
       <!-- Main content area -->
-      <main class="flex-grow">
+      <main class="flex-grow pt-10">
         <RouterView class="p-0 m-0"/>
       </main>
     </div>
 
     <!-- Footer -->
     <footer class="bg-black text-[#fff] py-4">
-  <div class="w-full mx-auto max-w-screen-xl p-4 flex justify-between items-center">
-    <div class="text-sm">
+  <div class="w-full mx-2 max-w-screen-xl p-4 flex ">
+    <div class="md:text-sm text-xs">
       © 2024 Healing Country. All Rights Reserved.
     </div>
-    <div class="flex items-center space-x-6">
-      <a href="#" class="hover:underline">Contact: </a>
-      <div class="text-sm flex space-x-4">
-        <p class="flex items-center">
-          <i class="fas fa-envelope mr-2"></i>
-          <a href="mailto:info@example.com" class="hover:underline">info@example.com</a>
-        </p>
-        <p class="flex items-center">
-          <i class="fas fa-phone-alt mr-2"></i>
-          <a href="tel:+1234567890" class="hover:underline">+1 (234) 567-890</a>
-        </p>
-      </div>
-    </div>
+  
   </div>
 </footer>
 
@@ -127,6 +115,10 @@ onMounted(() => {
   userRole.value = localStorage.getItem('userRole') || 'Guest';
   userName.value = localStorage.getItem('userName');
   userEmail.value = localStorage.getItem('userEmail');
+
+  if (userRole.value === 'admin' && route.path === '/'){
+    router.push('/adminHome')
+  }
 
   const hasShownTypingEffect = localStorage.getItem('hasShownTypingEffect');
   if (hasShownTypingEffect) {
