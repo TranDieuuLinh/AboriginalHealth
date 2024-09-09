@@ -1,5 +1,4 @@
 <script setup>
-import events from '../assets/json/events.json';
 import { ref, onMounted } from 'vue';
 import { collection, getDocs, setDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebaseConfig.js';

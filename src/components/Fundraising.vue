@@ -21,11 +21,11 @@
             </div>
           </div>
 
-          <div class="mt-10 rounded-xl overflow-hidden mx-auto" style="width: 60%;">
+          <div class="mt-10 rounded-xl overflow-hidden mx-auto" style="width: 60%;"  v-for="each in ourStory" :key="each.description">
             <!-- Highlight Picture Section -->
             <hr class="my-10 border-t-1 border-gray-600" />
             <div class="relative">
-              <img src="../assets/successStory.jpg" alt="Highlight" class=" object-cover">
+              <img :src ="each.imageUrl" alt="Highlight" class=" object-cover">
               <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white p-4">
                 <h1 class="text-2xl">Our Success Story</h1>
               </div>
@@ -33,15 +33,7 @@
             <hr class="my-10 border-t-1 border-gray-600" />
             <div class="px-4">
               <p class="text-gray-700">
-                Mia lived in a remote Aboriginal village in northern Australia, facing daily challenges like limited access to education and healthcare. Recognizing the need for support in such communities, our team decided to visit Mia's village to understand their situation firsthand.
-  
-                During our visit, we conducted thorough research and spoke directly with Mia and other community members. We learned about their needs, aspirations, and the barriers they faced. This personal connection allowed us to tailor our support effectively.
-  
-                Through our website, we were able to connect Mia with generous donors who provided vital resources, including school supplies, medical care, and job training opportunities. These donations made a significant difference in Mia's life.
-  
-                With the help from the donors, Mia excelled in her studies and pursued her passion for technology. Thanks to a scholarship funded through our platform, she attended university and is now making a positive impact in her community.
-  
-                Mia’s story is a testament to the power of direct engagement and community-driven support. By visiting her village and understanding her needs, we were able to facilitate meaningful change and help her achieve her dreams.
+                {{ each.description }}
               </p>
             </div>
             <hr class="my-10 border-t-1 border-gray-600" />
@@ -49,29 +41,79 @@
         </div>
       </div>
   
-      <div class=" md:px-8 lg:px-20 py-10 mb-10">
+      <div class=" md:px-10 lg:px-20 py-10 mb-10">
   <div class="flex flex-col ">
     <p class="font-semibold text-xl font-serif my-5 ">Donate Now</p>
-      <div class="grid grid-cols-1 gap-4 md:gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-        <a
-          v-for="(item, index) in news"
-          :key="index"
-          :href="item.url"
+      <div class="grid grid-cols-1 gap-5 md:gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+        <router-link
+          v-for="item in donationStories"
+          :key="item.title"
+          :to="{name: 'detail', params:{id:item.title}}"
           class="text-[#642E08] p-4 md:p-6  rounded-lg shadow-lg flex flex-col text-md hover:bg-[#b89d77]"
           target="_blank">
           <div class="flex  overflow-hidden rounded-md mb-4 w-full h-48 ">
-            <img :src="item.imgUrl" :alt="item.title" class="object-cover w-full h-full rounded-md" />
+            <img :src="item.imageUrl" :alt="item.title" class="object-cover w-full h-full rounded-md" />
           </div>
-          <p class="text-center">{{ item.title }}</p>
-        </a>
-
+          <h1 class="font-semibold">{{ item.title }}</h1>
+        </router-link>
+        
     </div>
   </div>
 </div>
     </div>
   </template>
   <script setup>
-    import news from '../assets/json/news.json';
+    import { db } from '../../firebaseConfig.js';
+  import { ref, onMounted } from 'vue';
+  import { getDocs, collection} from 'firebase/firestore';
+
+  const ourStory = ref([]);
+  const donationStories = ref([]);
+
+  const getOurStory = async() =>{
+    
+    try{
+    const story = [];
+    const storyDocRef = collection(db,'ourStory');
+    const querySnapshot = await getDocs(storyDocRef);
+
+    querySnapshot.forEach((doc) => {
+      story.push(doc.data());
+    });
+    console.log('Fetched our story:', story); 
+    ourStory.value = story;
+    
+  }
+  catch (error) {
+      console.error('Error getting document: ', error);
+      alert('Failed to get our story. ❌');
+    }
+  };
+
+  const getDonationStories = async() =>{
+    
+    try{
+    const story = [];
+    const storyDocRef = collection(db,'donateStory');
+    const querySnapshot = await getDocs(storyDocRef);
+
+    querySnapshot.forEach((doc) => {
+      story.push(doc.data());
+    });
+    console.log('Fetched donate stories:', story); 
+    donationStories.value = story;
+    
+  }
+  catch (error) {
+      console.error('Error getting document: ', error);
+      alert('Failed to get donate stories. ❌');
+    }
+  };
+
+  onMounted(() => {
+    getOurStory();
+    getDonationStories();
+  });
 </script>
   <style scoped>
   @keyframes rotate {

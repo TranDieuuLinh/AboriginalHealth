@@ -55,9 +55,6 @@
     <div v-if="loading" class="inset-0 z-20 fixed flex items-center justify-center">
       <i class="fa-solid fa-spinner animate-spin"></i>
     </div>
-    <div v-if="isModalOpen" class="bg-white shadow-lg">
-
-    </div>
   </div>
 
 </template>
@@ -73,7 +70,6 @@
   const imageInput = ref(null);
   const loading  = ref(false);
   const articles = ref([]);
-  const isModalOpen = ref(false);
   const selectedSpan = ref([]);
 
   const formData = ref({

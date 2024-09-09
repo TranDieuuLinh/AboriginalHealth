@@ -46,7 +46,7 @@
             <p v-if="errors.number_of_people" class="text-red-500 text-sm">{{ errors.number_of_people }}</p>
           </div>
           <div class="mb-5 flex justify-end max-w-md">
-            <button type="submit" class="bg-black text-white p-3 rounded-lg w-full">Add</button>
+            <button type="submit" class="bg-[#b89d77] text-white p-3 rounded-lg w-full">Add</button>
           </div>
         </form>
       </div>
@@ -63,7 +63,7 @@
                   </div>
               <div class="flex items-center justify-between">
                 <!-- Date Box -->
-                <div class="flex flex-col items-center justify-center bg-[#6e3e3a] w-36 h-24 rounded-lg text-center">
+                <div class="flex flex-col items-center justify-center bg-[#b89d77] w-36 h-24 rounded-lg text-center">
                   <span class="text-4xl font-bold text-white">{{ event.day }}</span>
                   <span class="text-sm text-white">{{ event.month }}</span>
                 </div>
@@ -71,7 +71,7 @@
                 <!-- Event Details -->
                 <div class="flex flex-col w-full p-2 ml-4">
                   <h3 class="text-2xl font-bold mb-2">
-                    <a :href="event.url" class="underline text-yellow-200">{{ event.title }}</a>
+                    <a :href="event.url" class="underline text-[#b89d77]">{{ event.title }}</a>
                   </h3>
                   <!-- Location and Time on the Same Line -->
                   <div class="flex flex-row gap-5">

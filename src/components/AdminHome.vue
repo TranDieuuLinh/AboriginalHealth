@@ -30,10 +30,10 @@ onMounted(() =>{
 
 <template>
   <main class="p-10 bg-gray-100 min-h-screen text-center">
-    <h1 class="text-2xl font-mono my-5 pt-10 text-gray-800">User Data Table</h1>
+    <h1 class="text-2xl font-bold my-5 pt-10 text-gray-800">User Data Table</h1>
     <div class="overflow-x-auto">
       <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg">
-        <thead class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+        <thead class="bg-[#b89d77] ">
           <tr>
             <th class="px-8 py-4 text-left text-base font-semibold tracking-wide uppercase">Name</th>
             <th class="px-8 py-4 text-left text-base font-semibold tracking-wide uppercase">Email</th>

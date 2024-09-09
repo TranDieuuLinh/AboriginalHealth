@@ -7,6 +7,9 @@ import NewsEventsView from '../views/NewsEventsView.vue'
 import FundraisingView from '../views/FundraisingView.vue'
 import AddNewsView from '../views/AddNewsView.vue'
 import AddEventsView from '../views/AddEventsView.vue'
+import AddFundStoryView from '../views/AddFundStoryView.vue'
+import FundDetail from '../components/FundDetail.vue'
+import DonateForm from '../components/DonateForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +53,23 @@ const router = createRouter({
       path:'/addEvents',
       name:'addEvents',
       component:AddEventsView
+    },
+    {
+      path:'/addFundStory',
+      name:'addFundStory',
+      component:AddFundStoryView
+    },
+    {
+      path:'/detail/:id',
+      name:'detail',
+      component:FundDetail,
+      props:true
+    },
+    {
+      path:'/DonateForm',
+      name:'DonateForm',
+      component:DonateForm,
+      props: (route) => ({ title: route.query.title })
     },
   ]
 })

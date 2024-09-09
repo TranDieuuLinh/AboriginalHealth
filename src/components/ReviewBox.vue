@@ -63,7 +63,7 @@ const fetchExistingReview = async () => {
 const submitReview = async () => {
   if (rating.value && comment.value) {
     if (!userEmail.value) {
-      alert("❗️User email is not available❗️");
+      alert("❗️You must sign in to rate for us❗️");
       return;
     }
     try {

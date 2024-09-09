@@ -28,6 +28,7 @@
           <RouterLink to="/adminHome" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">Home</RouterLink>
           <RouterLink to="/addNews" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">News</RouterLink>
           <RouterLink to="/addEvents" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">Events</RouterLink>
+          <RouterLink to="/addFundStory" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">Fundraising</RouterLink>
           <button @click="logout" class="text-red-500 flex items-center">Logout</button>
         </span>
         <span v-else>
@@ -74,14 +75,13 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-black text-[#fff] py-4">
-  <div class="w-full mx-2 max-w-screen-xl p-4 flex ">
-    <div class="md:text-sm text-xs">
-      © 2024 Healing Country. All Rights Reserved.
-    </div>
-  
-  </div>
-</footer>
+    <footer  v-if="showNavbar" class="bg-black text-[#fff] py-4">
+      <div class="w-full mx-2 max-w-screen-xl p-4 flex ">
+        <div class="md:text-sm text-xs">
+          © 2024 Healing Country. All Rights Reserved.
+        </div>
+      </div>
+    </footer>
 
 
   </div>
