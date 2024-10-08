@@ -1,3 +1,5 @@
+
+
 <template>
   <div class="fixed inset-0 flex items-center justify-center z-30 bg-gray-900 bg-opacity-50">
     <div class="bg-white p-8 rounded-2xl shadow-lg max-w-lg w-full relative">
@@ -73,16 +75,31 @@ const submitReview = async () => {
         comment: comment.value,
         rating: rating.value
       }, { merge: true });
+
+      // Disable button or show loading state if necessary
+      await fetch('https://sendemailfunction-tayhlvlyjq-ts.a.run.app', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: userEmail.value,
+          comment: comment.value,
+          rating: rating.value
+        }),
+      });
       
       alert("Your review has been successfully submitted✅");
       emit('close');
     } catch (e) {
       console.error("Error submitting review: ", e);
+      alert("❗️Failed to submit your review, please try again later❗️");
     }
   } else {
     alert("❗️Please put in your star and comment before submitting❗️");
   }
 };
+
 
 const closeReviewBox = () => {
   emit('close');
@@ -102,3 +119,6 @@ onMounted(() => {
   color: #d1d5db;
 }
 </style>
+
+
+
