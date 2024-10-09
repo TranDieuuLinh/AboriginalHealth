@@ -1,3 +1,4 @@
+
 <template>
     <div class="signUp-parent h-screen flex items-center justify-center">
       <div class="flex md:flex-row items-center justify-between bg-white sm:max-w-xl md:max-w-3xl lg:max-w-4xl rounded-2xl shadow-lg">
@@ -59,6 +60,9 @@
     import { ref } from 'vue';
     import { doc, setDoc, getDoc } from 'firebase/firestore';
     import DOMPurify from 'dompurify';
+    import {getAuth, createUserWithEmailAndPassword} from "firebase/auth"
+
+    const auth = getAuth();
 
     const sanitizeInput = (input) => {
         return DOMPurify.sanitize(input);
@@ -133,6 +137,9 @@
             if (userDoc.exists()) {
                 alert("Email already exists. Please use a different email.");
             } else {
+
+                await createUserWithEmailAndPassword(auth, formData.value.email, formData.value.password);
+
                 await setDoc(userDocRef, {
                     email: formData.value.email,
                     name: formData.value.fullName,
@@ -146,7 +153,8 @@
                 clearForm();
             }
         } catch (e) {
-            console.error("Error adding document: ", e);
+            console.error("Error during registration: ", e);
+            alert("Registration failed: " + e.message);
         }
     }
 };
@@ -172,3 +180,5 @@
   }
   </style>
   
+
+

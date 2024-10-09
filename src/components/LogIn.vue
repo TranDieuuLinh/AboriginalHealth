@@ -11,6 +11,8 @@
               v-model="email"
               required
               placeholder="Enter your email"
+              aria-label="Email"
+              aria-required="true"
             />
           </div>
           <div class="form-group">
@@ -39,16 +41,18 @@
   import { useRouter } from 'vue-router';
   import { db } from '../../firebaseConfig.js';
   import { doc, getDoc } from 'firebase/firestore';
-  
+  import {getAuth, signInWithEmailAndPassword} from "firebase/auth"
+
   const email = ref('');
   const password = ref('');
   const loginError = ref('');
   
   const router = useRouter();
-
+  const auth = getAuth();
 
   const login = async () => {
   try {
+    await signInWithEmailAndPassword(auth, email.value, password.value);
     // Create a document reference
     const docRef = doc(db, 'usersAccount', email.value); 
     const docSnap = await getDoc(docRef);

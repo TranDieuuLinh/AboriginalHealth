@@ -75,7 +75,7 @@
     </div>
 
     <!-- Footer -->
-    <footer  v-if="showNavbar" class="bg-black text-[#fff] py-4">
+    <footer  v-if="showNavbar" class="bg-black text-[#fff] p-5">
       <div class="w-full mx-2 max-w-screen-xl p-4 flex ">
         <div class="md:text-sm text-xs">
           © 2024 Healing Country. All Rights Reserved.

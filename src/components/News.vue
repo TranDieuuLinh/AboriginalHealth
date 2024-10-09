@@ -35,11 +35,11 @@
   <main>
     <div class=" md:px-8 lg:px-20 py-20 ">
       <div class="flex-grow  ">
-      <p class="text-xl">Articles</p>
+      <p class="text-xl py-5 font-serif">Articles</p>
       <div class="grid grid-cols-1 gap-4 md:gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-        <div v-for="each in articles" :key="each.title" class="text-[#642E08] p-4 md:p-6 rounded-xl shadow-lg flex flex-col text-md  bg-white ">
+        <div v-for="each in articles" :key="each.title" class="text-[#642E08] p-4 md:p-6 rounded-xl shadow-lg flex flex-col text-md  bg-[#f1e6d5] ">
           <div class="flex overflow-hidden h-48 w-full"> <img :src ="each.imageUrl" class="w-full h-full object-cover"></div>
-          <div class="flex justify-center "><h2>{{ each.title }}</h2></div>
+          <h1 class="font-bold my-2"><a :href="each.articleUrl" class="flex justify-center hover:underline underline">{{ each.title }}</a></h1>
           <div class="flex-grow"></div>
         </div>
       </div>
