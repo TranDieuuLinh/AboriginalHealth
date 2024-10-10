@@ -223,7 +223,7 @@
                 class="mr-2"
                 aria-label="Highlight event {{ event.title }}"
               />
-              <label for="highlight-{{ event.id }}" class="text-sm font-medium text-gray-400">Highlight?</label>
+              <label for="highlight-{{ event.id }}" class="text-sm font-medium text-white">Highlight?</label>
             </div>
 
             <div class="flex items-center justify-between mt-4">
@@ -295,7 +295,14 @@
           </div>
         </div>
       </div>
+      <div class="mt-4 space-x-4">
+      <button @click="previousPage" :disabled="currentPage === 1" class="btn-pagination" aria-label="Previous Page">Previous</button>
+      <span>Page {{ currentPage }}</span>
+      <button @click="nextPage" :disabled="filteredEvents.length < 10" class="btn-pagination" aria-label="Next Page">Next</button>
     </div>
+    </div>
+
+
 
     <!-- Loading Spinner -->
     <div v-if="loading" class="inset-0 z-20 fixed flex items-center justify-center" role="status" aria-live="polite">
@@ -306,16 +313,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { db, storage } from '../../firebaseConfig.js';
 import { collection, doc, setDoc, getDocs, deleteDoc } from 'firebase/firestore';
-import { uploadBytes, getDownloadURL, ref as storageRef } from 'firebase/storage';
 
 // State variables
 const loading = ref(false);
 const events = ref([]);
 const searchQuery = ref('');
 const isAscending = ref(true);
+const currentPage = ref(1);
 
 // Form data and errors
 const formData = ref({
@@ -496,18 +503,46 @@ const toggleSort = () => {
 
 // Computed property for filtered and sorted events
 const filteredEvents = computed(() => {
+  // Filter events based on search query
   let filtered = events.value.filter(event =>
     event.title.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 
+  // Sort filtered events based on the title and sort direction
   filtered = filtered.sort((a, b) => {
     if (a.title.toLowerCase() < b.title.toLowerCase()) return isAscending.value ? -1 : 1;
     if (a.title.toLowerCase() > b.title.toLowerCase()) return isAscending.value ? 1 : -1;
     return 0;
   });
 
-  return filtered;
+  // Pagination logic: calculate the start and end index for the current page
+  const startIndex = (currentPage.value - 1) * 10; // 10 items per page
+  const endIndex = startIndex + 10;
+
+  return filtered.slice(startIndex, endIndex); // Return the sliced array for the current page
 });
+
+// Function to go to the next page
+const nextPage = () => {
+  if (filteredEvents.value.length === 10) { // Only go to the next page if there are enough items
+    currentPage.value++;
+  }
+};
+
+// Function to go to the previous page
+const previousPage = () => {
+  if (currentPage.value > 1) { // Don't go back if we are on the first page
+    currentPage.value--;
+  }
+};
+
+// Function to reset the current page when the search query changes
+const resetPage = () => {
+  currentPage.value = 1;
+};
+
+// Watch for changes in the search query to reset the current page
+watch(searchQuery, resetPage);
 
 // Initialize on mount
 onMounted(() => {
@@ -538,6 +573,20 @@ onMounted(() => {
 /* Enhance focus for clickable divs */
 div[role="button"]:focus {
   outline: 3px solid #b89d77;
+}
+
+.btn-pagination {
+  background-color: #b89d77;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-pagination:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 /* Additional styling as needed */

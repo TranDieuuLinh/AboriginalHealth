@@ -2,6 +2,8 @@
 import { onMounted, ref, computed } from 'vue';
 import { db } from '../../firebaseConfig.js';
 import { getDocs, collection } from '@firebase/firestore';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const accounts = ref([]);
 const searchFilters = ref({ name: '', email: '', role: '', rating: '', comment: '' });
@@ -9,6 +11,27 @@ const sortKey = ref('');
 const sortDirection = ref(1);
 const currentPage = ref(1);
 const rowsPerPage = 10;
+
+const exportToPDF = () => {
+  const doc = new jsPDF();
+  const headers = ['Name', 'Email', 'Role', 'Rating', 'Comment'];
+  const rows = sortedAndFilteredAccounts.value.map(user => [
+    user.name,
+    user.email,
+    user.role,
+    user.rating,
+    user.comment
+  ]);
+
+  // Using autoTable method
+  doc.autoTable({
+    head: [headers],
+    body: rows,
+    theme: 'grid', 
+  });
+
+  doc.save('user_data.pdf');
+};
 
 const getAccounts = async () => {
   try {
@@ -67,7 +90,11 @@ onMounted(() => {
       <input v-model="searchFilters.role" placeholder="Search by Role" class="input-search" aria-label="Search by Role" tabindex="0">
       <input v-model="searchFilters.rating" placeholder="Search by Rating" class="input-search" aria-label="Search by Rating" tabindex="0">
       <input v-model="searchFilters.comment" placeholder="Search by Comment" class="input-search" aria-label="Search by Comment" tabindex="0">
+      <button @click="exportToPDF" class=" bg-[#142359] text-white px-4 py-3 rounded-lg shadow-sm hover:bg-gray-800 transition duration-300" tabindex="0" aria-label="Export">
+        Export to PDF
+      </button>
     </div>
+
 
     <!-- Table -->
     <div class="overflow-x-auto">
@@ -114,6 +141,7 @@ onMounted(() => {
         Next
       </button>
     </div>
+
   </main>
 </template>
 
