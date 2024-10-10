@@ -5,8 +5,8 @@ import { getDocs, collection } from '@firebase/firestore';
 
 const accounts = ref([]);
 const searchFilters = ref({ name: '', email: '', role: '', rating: '', comment: '' });
-const sortKey = ref('name');  // Default sort by name
-const sortDirection = ref(1);  // Default sort direction: ascending
+const sortKey = ref('');
+const sortDirection = ref(1);
 const currentPage = ref(1);
 const rowsPerPage = 10;
 
@@ -62,43 +62,43 @@ onMounted(() => {
 
     <!-- Search Filters -->
     <div class="mb-4 flex justify-center space-x-4">
-      <input v-model="searchFilters.name" placeholder="Search by Name" class="input-search">
-      <input v-model="searchFilters.email" placeholder="Search by Email" class="input-search">
-      <input v-model="searchFilters.role" placeholder="Search by Role" class="input-search">
-      <input v-model="searchFilters.rating" placeholder="Search by Rating" class="input-search">
-      <input v-model="searchFilters.comment" placeholder="Search by Comment" class="input-search">
+      <input v-model="searchFilters.name" placeholder="Search by Name" class="input-search" aria-label="Search by Name" tabindex="0">
+      <input v-model="searchFilters.email" placeholder="Search by Email" class="input-search" aria-label="Search by Email" tabindex="0">
+      <input v-model="searchFilters.role" placeholder="Search by Role" class="input-search" aria-label="Search by Role" tabindex="0">
+      <input v-model="searchFilters.rating" placeholder="Search by Rating" class="input-search" aria-label="Search by Rating" tabindex="0">
+      <input v-model="searchFilters.comment" placeholder="Search by Comment" class="input-search" aria-label="Search by Comment" tabindex="0">
     </div>
 
     <!-- Table -->
     <div class="overflow-x-auto">
-      <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+      <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg" role="table">
         <thead class="bg-[#b89d77] text-left">
-          <tr>
-            <th @click="changeSort('name')" class="px-8 py-4 text-left cursor-pointer">
-              Name <span v-if="sortKey === 'name'">{{ sortDirection === 1 ? '↑' : '↓' }}</span>
+          <tr role="row">
+            <th @click="changeSort('name')" class="px-8 py-4 text-left cursor-pointer" tabindex="0" aria-label="Sort by Name">
+              Name <span v-if="sortKey === 'name'" aria-hidden="true">{{ sortDirection === 1 ? '↑' : '↓' }}</span>
             </th>
-            <th @click="changeSort('email')" class="px-8 py-4 text-left cursor-pointer">
-              Email <span v-if="sortKey === 'email'">{{ sortDirection === 1 ? '↑' : '↓' }}</span>
+            <th @click="changeSort('email')" class="px-8 py-4 text-left cursor-pointer" tabindex="0" aria-label="Sort by Email">
+              Email <span v-if="sortKey === 'email'" aria-hidden="true">{{ sortDirection === 1 ? '↑' : '↓' }}</span>
             </th>
-            <th @click="changeSort('role')" class="px-8 py-4 text-left cursor-pointer">
-              Role <span v-if="sortKey === 'role'">{{ sortDirection === 1 ? '↑' : '↓' }}</span>
+            <th @click="changeSort('role')" class="px-8 py-4 text-left cursor-pointer" tabindex="0" aria-label="Sort by Role">
+              Role <span v-if="sortKey === 'role'" aria-hidden="true">{{ sortDirection === 1 ? '↑' : '↓' }}</span>
             </th>
-            <th @click="changeSort('rating')" class="px-8 py-4 text-left cursor-pointer">
-              Rating <span v-if="sortKey === 'rating'">{{ sortDirection === 1 ? '↑' : '↓' }}</span>
+            <th @click="changeSort('rating')" class="px-8 py-4 text-left cursor-pointer" tabindex="0" aria-label="Sort by Rating">
+              Rating <span v-if="sortKey === 'rating'" aria-hidden="true">{{ sortDirection === 1 ? '↑' : '↓' }}</span>
             </th>
-            <th @click="changeSort('comment')" class="px-8 py-4 text-left cursor-pointer">
-              Comment <span v-if="sortKey === 'comment'">{{ sortDirection === 1 ? '↑' : '↓' }}</span>
+            <th @click="changeSort('comment')" class="px-8 py-4 text-left cursor-pointer" tabindex="0" aria-label="Sort by Comment">
+              Comment <span v-if="sortKey === 'comment'" aria-hidden="true">{{ sortDirection === 1 ? '↑' : '↓' }}</span>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="user in sortedAndFilteredAccounts" :key="user.email"
-              class="bg-white hover:bg-indigo-50 transition-all transform hover:scale-95">
-            <td class="px-8 py-4 text-gray-800 border-b text-left">{{ user.name }}</td>
-            <td class="px-8 py-4 text-gray-800 border-b text-left">{{ user.email }}</td>
-            <td class="px-8 py-4 text-gray-800 border-b text-left">{{ user.role }}</td>
-            <td class="px-8 py-4 text-gray-800 border-b text-left">{{ user.rating }}</td>
-            <td class="px-8 py-4 text-gray-800 border-b text-left">{{ user.comment }}</td>
+              class="bg-white hover:bg-indigo-50 transition-all transform hover:scale-95" role="row">
+            <td class="px-8 py-4 text-gray-800 border-b text-left" role="cell">{{ user.name }}</td>
+            <td class="px-8 py-4 text-gray-800 border-b text-left" role="cell">{{ user.email }}</td>
+            <td class="px-8 py-4 text-gray-800 border-b text-left" role="cell">{{ user.role }}</td>
+            <td class="px-8 py-4 text-gray-800 border-b text-left" role="cell">{{ user.rating }}</td>
+            <td class="px-8 py-4 text-gray-800 border-b text-left" role="cell">{{ user.comment }}</td>
           </tr>
         </tbody>
       </table>
@@ -106,16 +106,17 @@ onMounted(() => {
 
     <!-- Pagination -->
     <div class="mt-4 space-x-4">
-      <button @click="currentPage > 1 && currentPage--" :disabled="currentPage === 1" class="btn-pagination">
+      <button @click="currentPage > 1 && currentPage--" :disabled="currentPage === 1" class="btn-pagination" tabindex="0" aria-label="Previous Page">
         Previous
       </button>
-      <span>Page {{ currentPage }} </span>
-      <button @click="currentPage++" :disabled="(currentPage * rowsPerPage) >= accounts.length" class="btn-pagination">
+      <span>Page {{ currentPage }}</span>
+      <button @click="currentPage++" :disabled="(currentPage * rowsPerPage) >= accounts.length" class="btn-pagination" tabindex="0" aria-label="Next Page">
         Next
       </button>
     </div>
   </main>
 </template>
+
 
 <style scoped>
 table {

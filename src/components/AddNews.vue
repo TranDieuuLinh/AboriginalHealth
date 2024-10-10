@@ -1,62 +1,75 @@
 <template>
-  <div class="flex flex-col  min-h-screen w-screen my-20">
-    <div class="flex flex-col items-center "> 
-      <form class="max-w-md w-full p-5 bg-white  rounded-lg shadow-lg" @submit.prevent="handleImageUpload">
+  <div class="flex flex-col min-h-screen w-screen my-20">
+    <div class="flex flex-col items-center">
+      <form class="max-w-md w-full p-5 bg-white rounded-lg shadow-lg" @submit.prevent="handleImageUpload">
         <div class="mb-5">
           <label for="image" class="text-lg font-semibold">Upload file:</label>
-          <div class="my-2 shadow-sm p-5 bg-gray-100 text-center cursor-pointer" @click="imageInput.click()"><i class="fa fa-upload mr-2"></i> Choose Image</div>
-            <input type="file" ref="imageInput" id="image" @change="handleImageInput" class="hidden"/>
-          <div v-if="formData.imageFile" class="text-green-600">File selected: {{ formData.imageFile.name }}</div>
+          <div
+            class="my-2 shadow-sm p-5 bg-gray-100 text-center cursor-pointer"
+            @click="imageInput.click()"
+            role="button"
+            tabindex="0"
+            @keydown.enter="imageInput.click()"
+            aria-label="Choose image to upload">
+            <i class="fa fa-upload mr-2"></i> Choose Image
+          </div>
+          <input type="file" ref="imageInput" id="image" @change="handleImageInput" class="hidden" aria-required="true"/>
+          <div v-if="formData.imageFile" class="text-green-600" aria-live="polite">File selected: {{ formData.imageFile.name }}</div>
         </div>
         <div class="mb-5">
-          <label for="title"  class="text-lg font-semibold">Title:</label>
-          <input type="text" id="title" placeholder="Enter Title" v-model="formData.title" class="w-full border rounded-md p-3 my-2"/>
+          <label for="title" class="text-lg font-semibold">Title:</label>
+          <input type="text" id="title" placeholder="Enter Title" v-model="formData.title" class="w-full border rounded-md p-3 my-2" aria-required="true"/>
         </div>
         <div class="mb-5">
-          <label for="articleUrl"  class="text-lg font-semibold">Article Url:</label>
-          <input type="text" id="articleUrl" placeholder="Enter Article Url" v-model="formData.articleUrl" class="w-full border rounded-md p-3 my-2"/>
+          <label for="articleUrl" class="text-lg font-semibold">Article Url:</label>
+          <input type="text" id="articleUrl" placeholder="Enter Article Url" v-model="formData.articleUrl" class="w-full border rounded-md p-3 my-2" aria-required="true"/>
         </div>
-        <div class="mb-5 flex justify-end max-w-md"><button type="submit" class="bg-[#b89d77] text-white p-3 rounded-lg  w-full" >Add</button></div>
+        <div class="mb-5 flex justify-end max-w-md">
+          <button type="submit" class="bg-[#b89d77] text-white p-3 rounded-lg w-full" aria-label="Submit form to upload image">Add</button>
+        </div>
       </form>
     </div>
-    <div class="flex-grow  mx-20 mt-10">
+    <div class="flex-grow mx-20 mt-10">
       <h1 class="text-xl">Articles</h1>
       <div class="grid grid-cols-1 gap-4 md:gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-        <div v-for="each in articles" :key="each.title" class="text-[#642E08] p-4 md:p-6 rounded-xl shadow-lg flex flex-col text-md  bg-white ">
-          <div class="flex overflow-hidden h-48 w-full"> <img :src ="each.imageUrl" class="w-full h-full object-cover"></div>
-          <div class="flex justify-center "><h2>{{ each.title }}</h2></div>
+        <div
+          v-for="each in articles"
+          :key="each.title"
+          class="text-[#642E08] p-4 md:p-6 rounded-xl shadow-lg flex flex-col text-md bg-white"
+          tabindex="0"
+          aria-label="Article with title {{ each.title }}">
+          <div class="flex overflow-hidden h-48 w-full">
+            <img :src="each.imageUrl" :alt="'Image for ' + each.title" class="w-full h-full object-cover">
+          </div>
+          <div class="flex justify-center">
+            <h2>{{ each.title }}</h2>
+          </div>
           <div class="flex-grow"></div>
           <div class="flex mb-4 justify-start items-center">
-            <input id="default-checkbox" type="checkbox" @change="handleHighlight(each)" v-model="each.isHighlighted" class=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <input id="default-checkbox" type="checkbox" @change="handleHighlight(each)" v-model="each.isHighlighted" class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" :aria-checked="each.isHighlighted.toString()">
             <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Highlight</label>
           </div>
           <div class="flex flex-col justify-between mt-auto gap-2">
             <div class="relative text-white" v-if="each.isHighlighted">
-              <select @change="handleSpanHighlight(each)" v-model="each.spanHighlight" class="block w-full p-2 pl-3 pr-10 text-sm bg-[#b89d77] border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200">
+              <select @change="handleSpanHighlight(each)" v-model="each.spanHighlight" class="block w-full p-2 pl-3 pr-10 text-sm bg-[#b89d77] border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200" aria-required="true" :aria-disabled="!each.isHighlighted">
                 <option value="" disabled selected>Choose a highlight width</option>
                 <option v-for="span in [1, 2, 3]" :key="span" :value="span" :disabled="selectedSpan.includes(span)">
                   Span {{ span }}
                 </option>
               </select>
-
-                <div class="absolute inset-y-0 right-2 flex items-center px-2 pointer-events-none">
-                  <i class="fas fa-chevron-down text-white"></i>
-                </div>
+              <div class="absolute inset-y-0 right-2 flex items-center px-2 pointer-events-none">
+                <i class="fas fa-chevron-down text-white"></i>
+              </div>
             </div>
-            <button
-              @click="handleDeleteArticle(each.title)"
-              class="w-full bg-red-500 text-white p-2 rounded-md hover:bg-red-600 text-center">
-              Delete
-            </button>
+            <button @click="handleDeleteArticle(each.title)" class="w-full bg-red-500 text-white p-2 rounded-md hover:bg-red-600 text-center" aria-label="Delete article {{ each.title }}">Delete</button>
           </div>
         </div>
       </div>
     </div>
-    <div v-if="loading" class="inset-0 z-20 fixed flex items-center justify-center">
-      <i class="fa-solid fa-spinner animate-spin"></i>
+    <div v-if="loading" class="inset-0 z-20 fixed flex items-center justify-center" aria-live="assertive">
+      <i class="fa-solid fa-spinner animate-spin" aria-label="Loading"></i>
     </div>
   </div>
-
 </template>
 
 

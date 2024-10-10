@@ -20,7 +20,7 @@
 
     <div v-if="showIntro">
       <!-- Navbar -->
-      <div v-if="showNavbar" class="bg-black fixed w-full text-[#e6e6e6] flex flex-row justify-between items-center px-8 py-5 z-20">
+      <div class="bg-black fixed w-full text-[#e6e6e6] flex flex-row justify-between items-center px-8 py-5 z-20">
         <span class="flex flex-row gap-2.5">
           <h1 class="font-thin logoTitle">HealingCountry</h1>
         </span>
@@ -75,7 +75,7 @@
     </div>
 
     <!-- Footer -->
-    <footer  v-if="showNavbar" class="bg-black text-[#fff] p-5">
+    <footer   class="bg-black text-[#fff] p-5">
       <div class="w-full mx-2 max-w-screen-xl p-4 flex ">
         <div class="md:text-sm text-xs">
           © 2024 Healing Country. All Rights Reserved.
@@ -107,10 +107,6 @@ const showIntro = ref(false);
 const showButton = ref(false);
 const isAnimating = ref(false); 
 const typedElement = ref(null);
-
-const showNavbar = computed(() => {
-  return route.path !== '/signup' && route.path !== '/login';
-});
 
 onMounted(() => {
   userRole.value = localStorage.getItem('userRole') || 'Guest';

@@ -5,22 +5,22 @@
       <form class="max-w-md w-full p-5 bg-white rounded-lg shadow-lg" @submit.prevent="() => handleImageUpload('donation')">
         <div class="mb-5">
           <label for="donation-image" class="text-lg font-semibold">Upload Donation:</label>
-          <div class="my-2 shadow-sm p-5 bg-gray-100 text-center cursor-pointer" @click="triggerFileInput('donation')">
-            <i class="fa fa-upload mr-2"></i> Choose Image
+          <div class="my-2 shadow-sm p-5 bg-gray-100 text-center cursor-pointer" @click="triggerFileInput('donation')" tabindex="0" @keypress.enter="triggerFileInput('donation')" role="button" aria-label="Upload Donation Image">
+            <i class="fa fa-upload mr-2" aria-hidden="true"></i> <span>Choose Image</span>
           </div>
-          <input type="file" ref="donationImageInput" id="donation-image" @change="event => handleImageInput('donation', event)" class="hidden"/>
+          <input type="file" ref="donationImageInput" id="donation-image" @change="event => handleImageInput('donation', event)" class="hidden" aria-label="Donation Image Input"/>
           <div v-if="formData.donation.imageFile" class="text-green-600">File selected: {{ formData.donation.imageFile.name }}</div>
         </div>
         <div class="mb-5">
           <label for="donation-title" class="text-lg font-semibold">Title:</label>
-          <input type="text" id="donation-title" placeholder="Enter Title" v-model="formData.donation.title" class="w-full border rounded-md p-3 my-2"/>
+          <input type="text" id="donation-title" placeholder="Enter Title" v-model="formData.donation.title" class="w-full border rounded-md p-3 my-2" aria-required="true"/>
         </div>
         <div class="mb-5">
           <label for="donation-description" class="text-lg font-semibold">Description:</label>
-          <input type="text" id="donation-description" placeholder="Enter Description" v-model="formData.donation.description" class="w-full border rounded-md p-3 my-2"/>
+          <input type="text" id="donation-description" placeholder="Enter Description" v-model="formData.donation.description" class="w-full border rounded-md p-3 my-2" aria-required="true"/>
         </div>
         <div class="mb-5 flex justify-end max-w-md">
-          <button type="submit" class="bg-[#b89d77] text-white p-3 rounded-lg w-full">Add</button>
+          <button type="submit" class="bg-[#b89d77] text-white p-3 rounded-lg w-full" aria-label="Add Donation">Add</button>
         </div>
       </form>
     </div>
@@ -31,7 +31,7 @@
       <div class="grid grid-cols-1 gap-4 md:gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
         <div v-for="each in donationStories" :key="each.id" class="text-[#642E08] p-4 md:p-6 rounded-xl shadow-lg flex flex-col text-md bg-white">
           <div class="flex overflow-hidden h-48 w-full">
-            <img :src="each.imageUrl" class="w-full h-full object-cover" />
+            <img :src="each.imageUrl" :alt="`Image of ${each.title}`" class="w-full h-full object-cover"/>
           </div>
           <div class="flex justify-center font-bold my-2">
             <h2>{{ each.title }}</h2>
@@ -41,9 +41,7 @@
           </div>
           <div class="flex-grow"></div>
           <div class="flex flex-col justify-between my-3 gap-2">
-            <button @click="() => handleDeleteDonationStories(each.id, 'donateStory')" class="w-full bg-red-500 text-white p-2 rounded-md hover:bg-red-600 text-center">
-              Delete
-            </button>
+            <button @click="() => handleDeleteDonationStories(each.id, 'donateStory')" class="w-full bg-red-500 text-white p-2 rounded-md hover:bg-red-600 text-center" aria-label="Delete Donation Story">Delete</button>
           </div>
         </div>
       </div>
@@ -54,18 +52,18 @@
       <form class="max-w-md w-full p-5 bg-white rounded-lg shadow-lg" @submit.prevent="() => handleImageUpload('our')">
         <div class="mb-5">
           <label for="our-image" class="text-lg font-semibold">Upload Our Story:</label>
-          <div class="my-2 shadow-sm p-5 bg-gray-100 text-center cursor-pointer" @click="triggerFileInput('our')">
-            <i class="fa fa-upload mr-2"></i> Choose Image
+          <div class="my-2 shadow-sm p-5 bg-gray-100 text-center cursor-pointer" @click="triggerFileInput('our')" tabindex="0" @keypress.enter="triggerFileInput('our')" role="button" aria-label="Upload Our Story Image">
+            <i class="fa fa-upload mr-2" aria-hidden="true"></i> <span>Choose Image</span>
           </div>
-          <input type="file" ref="ourImageInput" id="our-image" @change="event => handleImageInput('our', event)" class="hidden"/>
+          <input type="file" ref="ourImageInput" id="our-image" @change="event => handleImageInput('our', event)" class="hidden" aria-label="Our Story Image Input"/>
           <div v-if="formData.our.imageFile" class="text-green-600">File selected: {{ formData.our.imageFile.name }}</div>
         </div>
         <div class="mb-5">
           <label for="our-description" class="text-lg font-semibold">Description:</label>
-          <input type="text" id="our-description" placeholder="Enter Description" v-model="formData.our.description" class="w-full border rounded-md p-3 my-2"/>
+          <input type="text" id="our-description" placeholder="Enter Description" v-model="formData.our.description" class="w-full border rounded-md p-3 my-2" aria-required="true"/>
         </div>
         <div class="mb-5 flex justify-end max-w-md">
-          <button type="submit" class="bg-[#b89d77] text-white p-3 rounded-lg w-full">Add</button>
+          <button type="submit" class="bg-[#b89d77] text-white p-3 rounded-lg w-full" aria-label="Add Our Story">Add</button>
         </div>
       </form>
     </div>
@@ -75,23 +73,21 @@
       <h1 class="text-xl">Our Stories</h1>
       <div v-for="each in ourStories" :key="each.id" class="text-[#642E08] p-4 md:p-10 rounded-xl shadow-lg flex flex-col text-md bg-white">
         <div class="flex overflow-hidden h-58 w-full">
-          <img :src="each.imageUrl" class="w-full h-full object-cover" />
+          <img :src="each.imageUrl" :alt="`Our Story Image`" class="w-full h-full object-cover"/>
         </div>
         <div class="flex text-black py-4">
           <h2>{{ each.description }}</h2>
         </div>
         <div class="flex-grow"></div>
         <div class="flex flex-col justify-between my-3 gap-2">
-          <button @click="() => handleDeleteDonationStories(each.id, 'ourStory')" class="w-full bg-red-500 text-white p-2 rounded-md hover:bg-red-600 text-center">
-            Delete
-          </button>
+          <button @click="() => handleDeleteDonationStories(each.id, 'ourStory')" class="w-full bg-red-500 text-white p-2 rounded-md hover:bg-red-600 text-center" aria-label="Delete Our Story">Delete</button>
         </div>
       </div>
     </div>
 
     <!-- Loading Spinner -->
-    <div v-if="loading" class="inset-0 z-20 fixed flex items-center justify-center">
-      <i class="fa-solid fa-spinner animate-spin"></i>
+    <div v-if="loading" class="inset-0 z-20 fixed flex items-center justify-center" role="status" aria-live="polite">
+      <i class="fa-solid fa-spinner animate-spin" aria-hidden="true"></i> <span class="sr-only">Loading...</span>
     </div>
   </div>
 </template>
