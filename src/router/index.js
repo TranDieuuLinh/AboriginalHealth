@@ -9,6 +9,7 @@ import AddNewsView from '../views/AddNewsView.vue'
 import AddEventsView from '../views/AddEventsView.vue'
 import AddFundStoryView from '../views/AddFundStoryView.vue'
 import FundDetail from '../components/FundDetail.vue'
+import Map from '../components/Map.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +64,15 @@ const router = createRouter({
       name:'detail',
       component:FundDetail,
       props:true
+    },
+    {
+      path: '/map/:id', 
+      name: 'map',
+      component: Map, 
+      props: (route) => ({
+        id: route.params.id,
+        location: route.query.location 
+      }),
     },
   ]
 })

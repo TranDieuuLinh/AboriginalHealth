@@ -255,11 +255,11 @@
                   <div class="flex flex-col gap-2 text-sm">
                     <p class="flex items-center">
                       <i class="fas fa-map-marker-alt mr-2" aria-hidden="true"></i>
-                      <span class="sr-only">Location:</span>{{ event.location }}
+                      {{ event.location }}
                     </p>
                     <p class="flex items-center">
                       <i class="fas fa-clock mr-2" aria-hidden="true"></i>
-                      <span class="sr-only">Time:</span>{{ event.time }}
+                     {{ event.time }}
                     </p>
                   </div>
 
@@ -267,11 +267,11 @@
                   <div class="flex flex-col gap-2 text-sm">
                     <p class="flex items-center">
                       <i class="fas fa-dollar-sign mr-2" aria-hidden="true"></i>
-                      <span class="sr-only">Cost:</span>{{ event.cost }}
+                      {{ event.cost }}
                     </p>
                     <p class="flex items-center">
                       <i class="fas fa-users mr-2" aria-hidden="true"></i>
-                      <span class="sr-only">Number of People:</span>{{ event.number_of_people }} people
+                      {{ event.number_of_people }} people
                     </p>
                   </div>
                 </div>

@@ -47,7 +47,14 @@ import { db } from '../../firebaseConfig.js';
                   <div class="flex flex-col gap-2 text-black-200 text-sm">
                     <p class="flex items-center">
                       <i class="fas fa-map-marker-alt mr-2" aria-hidden="true"></i>
-                      <span class="sr-only">Location:</span>{{ event.location }}
+                      <router-link 
+                        :to="{ 
+                          name: 'map', 
+                          params: { id: event.location }, 
+                          query: { location: event.location }}">
+                        {{ event.location }}
+                      </router-link>
+
                     </p>
                     <p class="flex items-center">
                       <i class="fas fa-clock mr-2" aria-hidden="true"></i>
