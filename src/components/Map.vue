@@ -133,7 +133,7 @@
             'line-cap': 'round'
           },
           paint: {
-            'line-color': '#888',
+            'line-color': '#3396FF',
             'line-width': 8
           }
         });

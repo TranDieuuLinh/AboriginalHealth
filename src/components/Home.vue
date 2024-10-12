@@ -77,9 +77,9 @@
             <div class="relative z-10">
               <div class="flex items-center justify-between">
                 <!-- Date Box -->
-                <div class="flex flex-col items-center justify-center shadow-lg bg-[#6e3e3a] w-36 h-24 rounded-lg text-center">
-                  <span class="text-4xl font-bold text-[#ffffff]">{{ event.day }}</span>
-                  <span class="text-sm text-[#ffffff]">{{ event.month }}</span>
+                <div class="flex flex-col items-center justify-center bg-[#b89d77] w-36 h-24 rounded-lg text-center" aria-label="Event Date">
+                  <span class="text-4xl font-bold text-white">{{ new Date(event.date).getDate() }} </span>
+                  <span class="text-sm text-white">{{ new Date(event.date).toLocaleString('default', { month: 'short' }) }}, {{ new Date(event.date).getFullYear() }} </span>
                 </div>
 
                 <!-- Event Details -->
@@ -100,7 +100,7 @@
                         <i class="fas fa-map-marker-alt mr-2" aria-hidden="true"></i>{{ event.location }}
                       </p>
                       <p class="flex items-center" aria-label="Time: {{ event.time }}">
-                        <i class="fas fa-clock mr-2" aria-hidden="true"></i>{{ event.time }}
+                        <i class="fas fa-clock mr-2" aria-hidden="true"></i>{{ event.startTime }} - {{ event.endTime }}
                       </p>
                     </div>
 

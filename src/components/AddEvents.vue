@@ -1,13 +1,20 @@
 <template>
   <div class="flex flex-col min-h-screen w-screen my-20">
-    <!-- Donation Form -->
+    <!-- Event Form -->
     <div class="flex flex-col items-center">
       <form
+        ref="eventForm"
         class="max-w-md w-full p-5 bg-white rounded-lg shadow-lg"
         @submit.prevent="handleEventUpload"
         aria-labelledby="event-form-title"
       >
-        <h2 id="event-form-title" class="text-xl font-bold mb-5">Add New Event</h2>
+        <h2 id="event-form-title" class="text-xl font-bold mb-5">
+          {{ isEditing ? 'Edit Event' : 'Add New Event' }}
+        </h2>
+
+        <div v-if="isEditing" class="mb-4 p-2 bg-green-100 border rounded">
+          You are editing an existing event. Make your changes below.
+        </div>
 
         <!-- Title -->
         <div class="mb-5">
@@ -46,33 +53,16 @@
 
         <!-- Date -->
         <div class="mb-5">
-          <label class="text-lg font-semibold">Date:</label>
-          <div class="flex gap-2">
-            <div class="w-1/2">
-              <input
-                type="text"
-                id="day"
-                placeholder="Day"
-                v-model="formData.day"
-                class="w-full border rounded-md p-3 my-2"
-                aria-required="true"
-                :aria-invalid="errors.date ? 'true' : 'false'"
-                aria-describedby="date-error"
-              />
-            </div>
-            <div class="w-1/2">
-              <input
-                type="text"
-                id="month"
-                placeholder="Month"
-                v-model="formData.month"
-                class="w-full border rounded-md p-3 my-2"
-                aria-required="true"
-                :aria-invalid="errors.date ? 'true' : 'false'"
-                aria-describedby="date-error"
-              />
-            </div>
-          </div>
+          <label for="date" class="text-lg font-semibold">Date:</label>
+          <input
+            type="date"
+            id="date"
+            v-model="formData.date"
+            class="w-full border rounded-md p-3 my-2"
+            aria-required="true"
+            :aria-invalid="errors.date ? 'true' : 'false'"
+            aria-describedby="date-error"
+          />
           <p v-if="errors.date" id="date-error" class="text-red-500 text-sm" role="alert">
             {{ errors.date }}
           </p>
@@ -96,21 +86,37 @@
           </p>
         </div>
 
-        <!-- Time -->
+        <!-- Start Time -->
         <div class="mb-5">
-          <label for="time" class="text-lg font-semibold">Time:</label>
+          <label for="start-time" class="text-lg font-semibold">Start Time:</label>
           <input
-            type="text"
-            id="time"
-            placeholder="Enter Time"
-            v-model="formData.time"
+            type="time"
+            id="start-time"
+            v-model="formData.startTime"
             class="w-full border rounded-md p-3 my-2"
             aria-required="true"
-            :aria-invalid="errors.time ? 'true' : 'false'"
-            aria-describedby="time-error"
+            :aria-invalid="errors.startTime ? 'true' : 'false'"
+            aria-describedby="start-time-error"
           />
-          <p v-if="errors.time" id="time-error" class="text-red-500 text-sm" role="alert">
-            {{ errors.time }}
+          <p v-if="errors.startTime" id="start-time-error" class="text-red-500 text-sm" role="alert">
+            {{ errors.startTime }}
+          </p>
+        </div>
+
+        <!-- End Time -->
+        <div class="mb-5">
+          <label for="end-time" class="text-lg font-semibold">End Time:</label>
+          <input
+            type="time"
+            id="end-time"
+            v-model="formData.endTime"
+            class="w-full border rounded-md p-3 my-2"
+            aria-required="true"
+            :aria-invalid="errors.endTime ? 'true' : 'false'"
+            aria-describedby="end-time-error"
+          />
+          <p v-if="errors.endTime" id="end-time-error" class="text-red-500 text-sm" role="alert">
+            {{ errors.endTime }}
           </p>
         </div>
 
@@ -118,7 +124,7 @@
         <div class="mb-5">
           <label for="url" class="text-lg font-semibold">Event URL:</label>
           <input
-            type="text"
+            type="url"
             id="url"
             placeholder="Enter Event URL"
             v-model="formData.url"
@@ -136,7 +142,7 @@
         <div class="mb-5">
           <label for="cost" class="text-lg font-semibold">Cost:</label>
           <input
-            type="text"
+            type="number"
             id="cost"
             placeholder="Enter Cost"
             v-model="formData.cost"
@@ -144,6 +150,8 @@
             aria-required="true"
             :aria-invalid="errors.cost ? 'true' : 'false'"
             aria-describedby="cost-error"
+            step="0.01"
+            min="0"
           />
           <p v-if="errors.cost" id="cost-error" class="text-red-500 text-sm" role="alert">
             {{ errors.cost }}
@@ -157,11 +165,12 @@
             type="number"
             id="number_of_people"
             placeholder="Enter Number of People"
-            v-model="formData.number_of_people"
+            v-model.number="formData.number_of_people"
             class="w-full border rounded-md p-3 my-2"
             aria-required="true"
             :aria-invalid="errors.number_of_people ? 'true' : 'false'"
             aria-describedby="people-error"
+            min="1"
           />
           <p v-if="errors.number_of_people" id="people-error" class="text-red-500 text-sm" role="alert">
             {{ errors.number_of_people }}
@@ -175,7 +184,7 @@
             class="bg-[#b89d77] text-white p-3 rounded-lg w-full"
             aria-label="Add Event"
           >
-            Add
+            {{ isEditing ? 'Update' : 'Add' }}
           </button>
         </div>
       </form>
@@ -205,7 +214,7 @@
       <h2 class="font-semibold text-xl font-serif my-5 text-black">Events</h2>
       <div class="relative w-full">
         <div
-          v-for="event in filteredEvents"
+          v-for="event in paginatedEvents"
           :key="event.id"
           class="mb-8 p-6 rounded-lg shadow-lg border border-gray-700 relative transition-transform transform hover:scale-105 bg-gray-800"
           role="article"
@@ -223,14 +232,13 @@
                 class="mr-2"
                 aria-label="Highlight event {{ event.title }}"
               />
-              <label for="highlight-{{ event.id }}" class="text-sm font-medium text-white">Highlight?</label>
+              <label class="text-sm font-medium text-white">Highlight?</label>
             </div>
 
             <div class="flex items-center justify-between mt-4">
-              <!-- Date Box -->
               <div class="flex flex-col items-center justify-center bg-[#b89d77] w-36 h-24 rounded-lg text-center" aria-label="Event Date">
-                <span class="text-4xl font-bold text-white">{{ event.day }}</span>
-                <span class="text-sm text-white">{{ event.month }}</span>
+                <span class="text-4xl font-bold text-white">{{ new Date(event.date).getDate() }} </span>
+                <span class="text-sm text-white">{{ new Date(event.date).toLocaleString('default', { month: 'short' }) }}, {{ new Date(event.date).getFullYear() }} </span>
               </div>
 
               <!-- Event Details -->
@@ -245,6 +253,8 @@
                     :href="event.url"
                     class="underline text-[#b89d77]"
                     aria-label="View details for {{ event.title }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     {{ event.title }}
                   </a>
@@ -259,7 +269,7 @@
                     </p>
                     <p class="flex items-center">
                       <i class="fas fa-clock mr-2" aria-hidden="true"></i>
-                     {{ event.time }}
+                      {{ event.startTime }} - {{ event.endTime }}
                     </p>
                   </div>
 
@@ -286,36 +296,43 @@
               <!-- Delete Button -->
               <button
                 @click="deleteEvent(event.id)"
-                class="absolute top-1 right-2 bg-black text-white px-4 py-2 rounded-lg"
+                class="absolute top-1 right-16 bg-black text-white px-4 py-2 rounded-lg"
                 aria-label="Delete Event {{ event.title }}"
               >
                 Delete
+              </button>
+              <!-- Edit Button -->
+              <button
+                @click="editEvent(event)"
+                class="bg-[#aeaba6] absolute top-1 right-0 text-white px-3 py-2 rounded-lg"
+                aria-label="Edit event {{ event.title }}"
+              >
+                Edit
               </button>
             </div>
           </div>
         </div>
       </div>
-      <div class="mt-4 space-x-4">
-      <button @click="previousPage" :disabled="currentPage === 1" class="btn-pagination" aria-label="Previous Page">Previous</button>
-      <span>Page {{ currentPage }}</span>
-      <button @click="nextPage" :disabled="filteredEvents.length < 10" class="btn-pagination" aria-label="Next Page">Next</button>
+      <!-- Pagination -->
+      <div class="mt-4 flex justify-center space-x-4">
+        <button @click="previousPage" :disabled="currentPage === 1" class="btn-pagination" aria-label="Previous Page">Previous</button>
+        <span>Page {{ currentPage }}</span>
+        <button @click="nextPage" :disabled="currentPage * itemsPerPage >= filteredEvents.length" class="btn-pagination" aria-label="Next Page">Next</button>
+      </div>
     </div>
-    </div>
-
-
 
     <!-- Loading Spinner -->
-    <div v-if="loading" class="inset-0 z-20 fixed flex items-center justify-center" role="status" aria-live="polite">
-      <i class="fa-solid fa-spinner animate-spin" aria-hidden="true"></i>
+    <div v-if="loading" class="inset-0 z-20 fixed flex items-center justify-center bg-opacity-50 bg-gray-900" role="status" aria-live="polite">
+      <i class="fa-solid fa-spinner animate-spin text-white text-3xl" aria-hidden="true"></i>
       <span class="sr-only">Loading...</span>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue';
-import { db, storage } from '../../firebaseConfig.js';
-import { collection, doc, setDoc, getDocs, deleteDoc } from 'firebase/firestore';
+import { ref, onMounted, computed, watch, nextTick } from 'vue';
+import { db } from '../../firebaseConfig.js';
+import { collection, doc, setDoc, getDocs, deleteDoc, updateDoc } from 'firebase/firestore';
 
 // State variables
 const loading = ref(false);
@@ -323,15 +340,18 @@ const events = ref([]);
 const searchQuery = ref('');
 const isAscending = ref(true);
 const currentPage = ref(1);
+const isEditing = ref(false);
+const eventForm = ref(null);
 
 // Form data and errors
 const formData = ref({
+  id: '',
   title: '',
   description: '',
-  day: '',
-  month: '',
+  date: '', // Combined date field
   location: '',
-  time: '',
+  startTime: '',
+  endTime: '',
   url: '',
   cost: '',
   number_of_people: null,
@@ -341,7 +361,8 @@ const errors = ref({
   description: '',
   date: '',
   location: '',
-  time: '',
+  startTime: '',
+  endTime: '',
   url: '',
   cost: '',
   number_of_people: '',
@@ -350,51 +371,98 @@ const errors = ref({
 // Validation function
 const validateForm = () => {
   let valid = true;
+  // Reset errors
   errors.value = {
     title: '',
     description: '',
     date: '',
     location: '',
-    time: '',
+    startTime: '',
+    endTime: '',
     url: '',
     cost: '',
     number_of_people: '',
   };
 
+  // Title validation
   if (!formData.value.title.trim()) {
     errors.value.title = 'Title is required.';
     valid = false;
   }
+
+  // Description validation
   if (!formData.value.description.trim()) {
     errors.value.description = 'Description is required.';
     valid = false;
   }
-  if (!formData.value.day.trim() || !formData.value.month.trim()) {
-    errors.value.date = 'Day and Month are required.';
+
+  // Date validation
+  if (!formData.value.date) {
+    errors.value.date = 'Date is required.';
     valid = false;
   }
+
+  // Location validation
   if (!formData.value.location.trim()) {
     errors.value.location = 'Location is required.';
     valid = false;
   }
-  if (!formData.value.time.trim()) {
-    errors.value.time = 'Time is required.';
+
+  // Start Time validation
+  if (!formData.value.startTime) {
+    errors.value.startTime = 'Start time is required.';
     valid = false;
   }
+
+  // End Time validation
+  if (!formData.value.endTime) {
+    errors.value.endTime = 'End time is required.';
+    valid = false;
+  } else if (formData.value.startTime >= formData.value.endTime) {
+    errors.value.endTime = 'End time must be later than start time.';
+    valid = false;
+  }
+
+  // URL validation
   if (!formData.value.url.trim()) {
     errors.value.url = 'Event URL is required.';
     valid = false;
-  }
-  if (!formData.value.cost.trim()) {
-    errors.value.cost = 'Cost is required.';
+  } else if (!isValidURL(formData.value.url)) {
+    errors.value.url = 'Invalid URL format.';
     valid = false;
   }
-  if (!formData.value.number_of_people || formData.value.number_of_people <= 0) {
+
+  // Cost validation
+  if (formData.value.cost === '' || formData.value.cost === null) {
+    errors.value.cost = 'Cost is required.';
+    valid = false;
+  } else if (isNaN(formData.value.cost) || parseFloat(formData.value.cost) < 0) {
+    errors.value.cost = 'Cost must be a non-negative number.';
+    valid = false;
+  }
+
+  // Number of People validation
+  if (formData.value.number_of_people === null || formData.value.number_of_people <= 0) {
     errors.value.number_of_people = 'Number of people must be greater than zero.';
     valid = false;
   }
 
   return valid;
+};
+
+// URL validation helper
+const isValidURL = (url) => {
+  const pattern = new RegExp(
+    '^(https?:\\/\\/)?' + // protocol
+      '((([a-zA-Z0-9\\-\\.]+)\\.([a-zA-Z]{2,5}))|' + // domain name
+      'localhost|' + // localhost
+      '\\d{1,3}(\\.\\d{1,3}){3})' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-zA-Z0-9@:%_\\+.~#?&//=]*)?' + // port and path
+      '(\\?[;&a-zA-Z0-9@:%_\\+.~#?&//=]*)?' + // query string
+      '(\\#[-a-zA-Z0-9@:%_\\+.~#?&//=]*)?$',
+    'i'
+  );
+  return pattern.test(url);
 };
 
 // Handle form submission
@@ -407,44 +475,67 @@ const handleEventUpload = async () => {
   try {
     loading.value = true;
 
-    // Create a unique ID for the event
-    const eventId = doc(collection(db, 'events')).id;
+    if (isEditing.value) {
+      // Editing existing event
+      await updateEvent();
+    } else {
+      // Adding new event
+      await addEvent();
+    }
 
-    // Add event to Firestore
+    resetForm();
+    await getAllEvents();
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    alert('Failed to submit the form. ❌');
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Add new event to Firestore
+const addEvent = async () => {
+  try {
+    const eventId = doc(collection(db, 'events')).id; // Generate a unique ID
     await setDoc(doc(db, 'events', eventId), {
       id: eventId,
       title: formData.value.title,
       description: formData.value.description,
-      day: formData.value.day,
-      month: formData.value.month,
+      date: formData.value.date, // YYYY-MM-DD
       location: formData.value.location,
-      time: formData.value.time,
+      startTime: formData.value.startTime, // HH:MM
+      endTime: formData.value.endTime,     // HH:MM
       url: formData.value.url,
-      cost: formData.value.cost,
-      number_of_people: formData.value.number_of_people,
+      cost: parseFloat(formData.value.cost),
+      number_of_people: parseInt(formData.value.number_of_people, 10),
       isHighlighted: false,
     });
-
-    // Reset form
-    formData.value = {
-      title: '',
-      description: '',
-      day: '',
-      month: '',
-      location: '',
-      time: '',
-      url: '',
-      cost: '',
-      number_of_people: null,
-    };
-
     alert('Event added successfully! 🎉');
-    await getAllEvents(); // Refresh the events list
   } catch (error) {
     console.error('Error adding event:', error);
     alert('Failed to add the event. ❌');
-  } finally {
-    loading.value = false;
+  }
+};
+
+// Update existing event in Firestore
+const updateEvent = async () => {
+  try {
+    const eventRef = doc(db, 'events', formData.value.id);
+    await updateDoc(eventRef, {
+      title: formData.value.title,
+      description: formData.value.description,
+      date: formData.value.date,
+      location: formData.value.location,
+      startTime: formData.value.startTime,
+      endTime: formData.value.endTime,
+      url: formData.value.url,
+      cost: parseFloat(formData.value.cost),
+      number_of_people: parseInt(formData.value.number_of_people, 10),
+    });
+    alert('Event updated successfully! 🎉');
+  } catch (error) {
+    console.error('Error updating event:', error);
+    alert('Failed to update the event. ❌');
   }
 };
 
@@ -463,36 +554,72 @@ const getAllEvents = async () => {
   }
 };
 
+// Edit an event
+const editEvent = (event) => {
+  isEditing.value = true;
+  formData.value = { ...event }; // Populate form with event data
+
+  // Scroll to the form
+  nextTick(() => {
+    if (eventForm.value) {
+      eventForm.value.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+};
+
+// Reset form to initial state
+const resetForm = () => {
+  formData.value = {
+    id: '',
+    title: '',
+    description: '',
+    date: '',
+    location: '',
+    startTime: '',
+    endTime: '',
+    url: '',
+    cost: '',
+    number_of_people: null,
+  };
+  errors.value = {
+    title: '',
+    description: '',
+    date: '',
+    location: '',
+    startTime: '',
+    endTime: '',
+    url: '',
+    cost: '',
+    number_of_people: '',
+  };
+  isEditing.value = false;
+};
+
 // Delete event
 const deleteEvent = async (id) => {
-  try {
-    loading.value = true;
-    await deleteDoc(doc(db, 'events', id));
-    alert('Event deleted successfully! 🎉');
-    await getAllEvents(); // Refresh the events list
-  } catch (error) {
-    console.error('Error deleting event:', error);
-    alert('Failed to delete the event. ❌');
-  } finally {
-    loading.value = false;
+  if (confirm('Are you sure you want to delete this event?')) {
+    try {
+      loading.value = true;
+      await deleteDoc(doc(db, 'events', id));
+      alert('Event deleted successfully! 🎉');
+      await getAllEvents();
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      alert('Failed to delete the event. ❌');
+    } finally {
+      loading.value = false;
+    }
   }
 };
 
 // Update highlight status
 const updateHighlightStatus = async (event) => {
   try {
-    loading.value = true;
-    await setDoc(doc(db, 'events', event.id), {
-      ...event,
-      isHighlighted: event.isHighlighted,
-    }, { merge: true });
-    alert('Highlight status updated successfully! 🎉');
-    await getAllEvents(); // Refresh the events list
+    const eventRef = doc(db, 'events', event.id);
+    await setDoc(eventRef, { isHighlighted: event.isHighlighted }, { merge: true });
   } catch (error) {
     console.error('Error updating highlight status:', error);
     alert('Failed to update highlight status. ❌');
-  } finally {
-    loading.value = false;
   }
 };
 
@@ -501,80 +628,64 @@ const toggleSort = () => {
   isAscending.value = !isAscending.value;
 };
 
-// Computed property for filtered and sorted events
+// Computed properties for filtering and sorting
 const filteredEvents = computed(() => {
-  // Filter events based on search query
   let filtered = events.value.filter(event =>
     event.title.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 
-  // Sort filtered events based on the title and sort direction
-  filtered = filtered.sort((a, b) => {
-    if (a.title.toLowerCase() < b.title.toLowerCase()) return isAscending.value ? -1 : 1;
-    if (a.title.toLowerCase() > b.title.toLowerCase()) return isAscending.value ? 1 : -1;
-    return 0;
+  // Sort events
+  filtered.sort((a, b) => {
+    const nameA = a.title.toLowerCase();
+    const nameB = b.title.toLowerCase();
+    if (isAscending.value) {
+      return nameA.localeCompare(nameB);
+    } else {
+      return nameB.localeCompare(nameA);
+    }
   });
 
-  // Pagination logic: calculate the start and end index for the current page
-  const startIndex = (currentPage.value - 1) * 10; // 10 items per page
-  const endIndex = startIndex + 10;
-
-  return filtered.slice(startIndex, endIndex); // Return the sliced array for the current page
+  return filtered;
 });
 
-// Function to go to the next page
+// Pagination logic
+const itemsPerPage = 10;
+const paginatedEvents = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  return filteredEvents.value.slice(start, start + itemsPerPage);
+});
+
 const nextPage = () => {
-  if (filteredEvents.value.length === 10) { // Only go to the next page if there are enough items
+  if (currentPage.value * itemsPerPage < filteredEvents.value.length) {
     currentPage.value++;
   }
 };
 
-// Function to go to the previous page
 const previousPage = () => {
-  if (currentPage.value > 1) { // Don't go back if we are on the first page
+  if (currentPage.value > 1) {
     currentPage.value--;
   }
 };
 
-// Function to reset the current page when the search query changes
-const resetPage = () => {
+// Watch for search query changes to reset page
+watch(searchQuery, () => {
   currentPage.value = 1;
-};
+});
 
-// Watch for changes in the search query to reset the current page
-watch(searchQuery, resetPage);
-
-// Initialize on mount
+// Fetch events on component mount
 onMounted(() => {
   getAllEvents();
 });
+
+// Format date for display
+const formatDate = (date) => {
+  if (!date) return '';
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(date).toLocaleDateString(undefined, options);
+};
 </script>
 
 <style scoped>
-/* Ensure focus styles are visible */
-:focus {
-  outline: 3px solid #b89d77; /* Change color as needed for better visibility */
-}
-
-/* Screen reader only class for descriptions */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  border: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  word-wrap: normal;
-}
-
-/* Enhance focus for clickable divs */
-div[role="button"]:focus {
-  outline: 3px solid #b89d77;
-}
-
 .btn-pagination {
   background-color: #b89d77;
   color: white;
@@ -589,5 +700,13 @@ div[role="button"]:focus {
   cursor: not-allowed;
 }
 
-/* Additional styling as needed */
+.error {
+  color: red;
+  font-size: 0.9em;
+}
+
+.bg-gray-800 .relative.z-10 {
+  position: relative;
+  z-index: 10;
+}
 </style>

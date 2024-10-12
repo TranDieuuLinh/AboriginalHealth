@@ -1,9 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { collection, getDocs, setDoc, doc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs} from 'firebase/firestore';
 import { db } from '../../firebaseConfig.js';
+import { useRouter } from 'vue-router';
   
   const event = ref([]);
+  const router = useRouter();
 
   const fetchEvents = async () => {
   try {
@@ -13,6 +15,10 @@ import { db } from '../../firebaseConfig.js';
   } catch (error) {
     console.error('Error fetching events: ', error);
   }
+};
+
+const subscribe = (event) => {
+  router.push({ name: 'Booking', params: { eventId: event.id } });
 };
 
   
@@ -33,14 +39,14 @@ import { db } from '../../firebaseConfig.js';
           <div class="relative z-10">
             <div class="flex items-center justify-between">
               <!-- Date Box -->
-              <div class="flex flex-col items-center justify-center shadow-lg bg-[#6e3e3a] w-36 h-24 rounded-lg text-center" aria-label="Event Date">
-                <span class="text-4xl font-bold text-[#ffffff]">{{ event.day }}</span>
-                <span class="text-sm text-[#ffffff]">{{ event.month }}</span>
+              <div class="flex flex-col items-center justify-center bg-[#b89d77] w-36 h-24 rounded-lg text-center" aria-label="Event Date">
+                <span class="text-4xl font-bold text-white">{{ new Date(event.date).getDate() }} </span>
+                <span class="text-sm text-white">{{ new Date(event.date).toLocaleString('default', { month: 'short' }) }}, {{ new Date(event.date).getFullYear() }} </span>
               </div>
 
               <!-- Event Details -->
               <div class="flex flex-col w-full p-2 ml-5">
-                <h3 id="event-title-{{ event.id }}" class="font-bold text-2xl text-[#b89d77]">
+                <h3 id="event-title-{{ event.title }}" class="font-bold text-2xl text-[#b89d77]">
                   <a :href="event.url" class="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6e3e3a]">{{ event.title }}</a>
                 </h3>
                 <div class="flex flex-row gap-5">
@@ -50,7 +56,7 @@ import { db } from '../../firebaseConfig.js';
                       <router-link 
                         :to="{ 
                           name: 'map', 
-                          params: { id: event.location }, 
+                          params: { id: event.id }, 
                           query: { location: event.location }}">
                         {{ event.location }}
                       </router-link>
@@ -58,7 +64,7 @@ import { db } from '../../firebaseConfig.js';
                     </p>
                     <p class="flex items-center">
                       <i class="fas fa-clock mr-2" aria-hidden="true"></i>
-                      <span class="sr-only">Time:</span>{{ event.time }}
+                      <span class="sr-only">Time:</span>{{ event.startTime }} - {{ event.endTime }}
                     </p>
                   </div>
                   <div class="flex flex-col gap-2 text-sm">
@@ -76,6 +82,8 @@ import { db } from '../../firebaseConfig.js';
                   <i class="fas fa-info-circle mt-1 mr-2" aria-hidden="true"></i>
                   <p>{{ event.description }}</p>
                 </div>
+                <!-- Subscribe Button -->
+                <button @click="subscribe(event)" class="bg-[#6e3e3a] text-white py-2 rounded mt-4 hover:bg-[#b89d77]">Subscribe →</button>
               </div>
             </div>
           </div>
@@ -83,6 +91,7 @@ import { db } from '../../firebaseConfig.js';
       </div>
     </div>
   </div>
+  
 </main>
 
 </template>
