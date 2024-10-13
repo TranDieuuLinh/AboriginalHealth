@@ -1,11 +1,11 @@
+require("dotenv").config({path: "./sendgrid.env"});
 const {onRequest} = require("firebase-functions/v2/https");
 const sgMail = require("@sendgrid/mail");
 const cors = require("cors")({origin: true});
-const functions = require("firebase-functions");
 
-const sendgridApiKey = functions.config().sendgrid.key;
 
-sgMail.setApiKey(sendgridApiKey);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 
 const sendEmail = async (email, comment, rating) => {
   const msg = {
@@ -60,3 +60,51 @@ exports.sendEmailFunction = onRequest({region: "australia-southeast1"},
       });
     },
 );
+
+
+// Cloud Function to handle bulk email sending
+exports.sendBulkFunction = onRequest({region: "australia-southeast1"},
+    async (req, res) => {
+      cors(req, res, async () => {
+        // Allow only POST requests
+        if (req.method !== "POST") {
+          return res.status(405).send("Method Not Allowed");
+        }
+
+        const {emails} = req.body; // Expecting an array of user objects
+
+        // Function to create the email message
+        const createEmailMessage = (email) => ({
+          to: email,
+          from: "dieulinh268268@gmail.com", // Sender email
+          subject: "New Review Submitted!",
+          text: [
+            `Another user just reviewed HealingCountry!`,
+            `Do you want to visit our website to take a look?`,
+            `Our website URL: https://aboriginal-health.vercel.app`,
+          ].join("\n"),
+          html: [
+            `Another user just reviewed HealingCountry!<br>`,
+            `<em>Do you want to take a look?</em><br>`,
+            `Visit our website: <a href="https://aboriginal-health.vercel.app">https://aboriginal-health.vercel.app</a>`,
+          ].join(""),
+        });
+
+        // Send emails concurrently
+        await Promise.all(
+            emails.map(async (user) => {
+              const {email} = user; // Destructure the email from user object
+
+              try {
+                const msg = createEmailMessage(email);
+                await sgMail.send(msg);
+                console.log(`Email sent successfully to ${email}`);
+              } catch (error) {
+                console.log(`Failed to send email to ${email}: ${error}`);
+              }
+            }),
+        );
+
+        return res.status(200).send("All emails sent!");
+      });
+    });

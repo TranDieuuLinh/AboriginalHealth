@@ -10,7 +10,6 @@ import AddEventsView from '../views/AddEventsView.vue'
 import AddFundStoryView from '../views/AddFundStoryView.vue'
 import FundDetail from '../components/FundDetail.vue'
 import Map from '../components/Map.vue'
-import Booking from '../components/Booking.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -74,12 +73,6 @@ const router = createRouter({
         id: route.params.id,
         location: route.query.location 
       }),
-    },
-    {
-      path: '/booking',
-      name: 'Booking',
-      component: Booking,
-      props: true, 
     },
   ]
 })

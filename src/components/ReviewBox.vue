@@ -94,7 +94,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { db } from '../../firebaseConfig.js';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, query, collection, where, getDocs } from 'firebase/firestore';
 
 const emit = defineEmits(['close']);
 const rating = ref(0);
@@ -129,6 +129,23 @@ const fetchExistingReview = async () => {
   }
 };
 
+const fetchUsersWithReviews = async () => {
+  const usersWithReviews = [];
+  const q = query(collection(db, "usersAccount"), where("rating", "!=", ""));
+  
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    // Check if the comment is also not empty
+    if (data.comment && data.comment.trim() !== "") {
+      usersWithReviews.push({ id: doc.id, ...data });
+    }
+  });
+
+  return usersWithReviews;
+};
+
+
 const submitReview = async () => {
   if (rating.value && comment.value) {
     if (!userEmail.value) {
@@ -143,7 +160,7 @@ const submitReview = async () => {
         rating: rating.value
       }, { merge: true });
 
-      // Disable button or show loading state if necessary
+      // Sending email about the current user's review
       await fetch('https://sendemailfunction-tayhlvlyjq-ts.a.run.app', {
         method: 'POST',
         headers: {
@@ -157,6 +174,28 @@ const submitReview = async () => {
       });
 
       alert("Your review has been successfully submitted✅");
+
+      const usersWithReviews = await fetchUsersWithReviews();
+      const emailList = usersWithReviews
+        .filter(user => user.email !== userEmail.value)
+        .map(user => ({ email: user.email }));
+
+      // Log the email list to inspect its contents
+      console.log("Email list for bulk email:", emailList);
+
+      // Send bulk email if the email list is not empty
+      if (emailList.length > 0) {
+        await fetch('https://sendbulkfunction-tayhlvlyjq-ts.a.run.app', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ emails: emailList }),
+        });
+      } else {
+        console.log("No emails to send bulk notifications.");
+      }
+
       emit('close');
     } catch (e) {
       console.error("Error submitting review: ", e);
@@ -166,6 +205,8 @@ const submitReview = async () => {
     alert("❗️Please put in your star and comment before submitting❗️");
   }
 };
+
+
 
 const closeReviewBox = () => {
   emit('close');

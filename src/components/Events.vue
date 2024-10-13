@@ -82,8 +82,6 @@ const subscribe = (event) => {
                   <i class="fas fa-info-circle mt-1 mr-2" aria-hidden="true"></i>
                   <p>{{ event.description }}</p>
                 </div>
-                <!-- Subscribe Button -->
-                <button @click="subscribe(event)" class="bg-[#6e3e3a] text-white py-2 rounded mt-4 hover:bg-[#b89d77]">Subscribe →</button>
               </div>
             </div>
           </div>
