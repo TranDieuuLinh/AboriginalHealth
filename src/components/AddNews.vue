@@ -41,7 +41,7 @@
           <div class="flex overflow-hidden h-48 w-full">
             <img :src="each.imageUrl" :alt="'Image for ' + each.title" class="w-full h-full object-cover">
           </div>
-          <div class="flex justify-center">
+          <div class="flex font-bold py-3 text-md">
             <h2>{{ each.title }}</h2>
           </div>
           <div class="flex-grow"></div>

@@ -46,7 +46,7 @@ const subscribe = (event) => {
 
               <!-- Event Details -->
               <div class="flex flex-col w-full p-2 ml-5">
-                <h3 id="event-title-{{ event.title }}" class="font-bold text-2xl text-[#b89d77]">
+                <h3 id="event-title-{{ event.title }}" class="font-bold text-2xl text-[#3d3c39]">
                   <a :href="event.url" class="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6e3e3a]">{{ event.title }}</a>
                 </h3>
                 <div class="flex flex-row gap-5">

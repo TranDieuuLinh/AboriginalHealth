@@ -87,7 +87,7 @@
                   <h3 class="font-bold mb-2">
                     <a
                       :href="event.url"
-                      class="text-2xl font-bold text-[#b89d77] mb-2 hover:underline"
+                      class="text-2xl font-bold text-[#3d3c39] mb-2 hover:underline"
                       aria-label="Event: {{ event.title }}"
                     >
                       {{ event.title }}
@@ -96,6 +96,8 @@
                   <!-- Location and Time on the Same Line -->
                   <div class="flex flex-row gap-5">
                     <div class="flex flex-col gap-2 text-black-200 text-sm">
+                    <p class="flex items-center">
+                      <i class="fas fa-map-marker-alt mr-2" aria-hidden="true"></i>
                       <router-link 
                         :to="{ 
                           name: 'map', 
@@ -106,10 +108,13 @@
                         aria-label="Location">
                         {{ event.location }}
                       </router-link>
-                      <p class="flex items-center" aria-label="Time: {{ event.time }}">
-                        <i class="fas fa-clock mr-2" aria-hidden="true"></i>{{ event.startTime }} - {{ event.endTime }}
-                      </p>
-                    </div>
+                    </p>
+
+                    <p class="flex items-center">
+                      <i class="fas fa-clock mr-2" aria-hidden="true"></i>
+                      <span class="sr-only">Time:</span>{{ event.startTime }} - {{ event.endTime }}
+                    </p>
+                  </div>
 
                     <!-- Cost and Number of People on the Same Line -->
                     <div class="flex flex-col gap-2 text-sm">
@@ -147,18 +152,22 @@
 
      <!-- Reviews Section -->
      <div class="w-full flex flex-col items-center py-28">
-      <div class="flex flex-col items-center mb-6">
-        <hr class="bg-[#882B2B] h-3 w-80 rounded-lg" />
-      </div>
-      <h2 class="text-5xl font-bold text-center font-serif mb-8">
-        What do active platform <br />users say about us
-      </h2>
-      <div v-if="averageTotalReviews > 0">
-        <div class="rounded-lg p-4 mb-8 w-full max-w-4xl">
-          <p class="text-lg text-gray-500 font-semibold text-center font-serif">
-            <span>Average Rating: {{ averageTotalReviews }}/5 based on {{ generalUsers.length }} reviews</span>
-          </p>
-        </div>
+  <div class="flex flex-col items-center mb-6">
+    <hr class="bg-[#882B2B] h-3 w-80 rounded-lg" />
+  </div>
+  <h2 class="text-5xl font-bold text-center font-serif mb-8">
+    What do active platform <br />users say about us
+  </h2>
+  
+  <div v-if="averageTotalReviews > 0" class="w-full max-w-7xl text-center">
+    <div class="rounded-lg p-4 mb-8">
+      <p class="text-lg text-gray-500 font-semibold font-serif">
+        <span>Average Rating: {{ averageTotalReviews }}/5 based on {{ generalUsers.length }} reviews</span>
+      </p>
+    </div>
+
+
+        
         <div class="w-full px-5">
           <div class="overflow-x-auto flex no-scrollbar">
             <div
