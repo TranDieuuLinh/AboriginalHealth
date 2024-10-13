@@ -55,7 +55,7 @@ onMounted(() => {
             >
               <a 
                 :href="each.articleUrl" 
-                class="flex justify-center hover:underline underline"
+                class="flex justify-center hover:underline "
                 aria-label="Read more about {{ each.title }}"
               >
                 {{ each.title }}

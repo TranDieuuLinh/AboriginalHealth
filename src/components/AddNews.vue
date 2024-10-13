@@ -47,7 +47,7 @@
           <div class="flex-grow"></div>
           <div class="flex mb-4 justify-start items-center">
             <input id="default-checkbox" type="checkbox" @change="handleHighlight(each)" v-model="each.isHighlighted" class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" :aria-checked="each.isHighlighted.toString()">
-            <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Highlight</label>
+            <label class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Highlight</label>
           </div>
           <div class="flex flex-col justify-between mt-auto gap-2">
             <div class="relative text-white" v-if="each.isHighlighted">
