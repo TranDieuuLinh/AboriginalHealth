@@ -96,9 +96,16 @@
                   <!-- Location and Time on the Same Line -->
                   <div class="flex flex-row gap-5">
                     <div class="flex flex-col gap-2 text-black-200 text-sm">
-                      <p class="flex items-center" aria-label="Location: {{ event.location }}">
-                        <i class="fas fa-map-marker-alt mr-2" aria-hidden="true"></i>{{ event.location }}
-                      </p>
+                      <router-link 
+                        :to="{ 
+                          name: 'map', 
+                          params: { id: event.id }, 
+                          query: { location: event.location } 
+                        }" 
+                        class="text-red-900 hover:underline"
+                        aria-label="Location">
+                        {{ event.location }}
+                      </router-link>
                       <p class="flex items-center" aria-label="Time: {{ event.time }}">
                         <i class="fas fa-clock mr-2" aria-hidden="true"></i>{{ event.startTime }} - {{ event.endTime }}
                       </p>

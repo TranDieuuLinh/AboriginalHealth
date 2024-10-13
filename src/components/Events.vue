@@ -57,11 +57,14 @@ const subscribe = (event) => {
                         :to="{ 
                           name: 'map', 
                           params: { id: event.id }, 
-                          query: { location: event.location }}">
+                          query: { location: event.location } 
+                        }" 
+                        class="text-red-900 hover:underline"
+                        aria-label="Location">
                         {{ event.location }}
                       </router-link>
-
                     </p>
+
                     <p class="flex items-center">
                       <i class="fas fa-clock mr-2" aria-hidden="true"></i>
                       <span class="sr-only">Time:</span>{{ event.startTime }} - {{ event.endTime }}
