@@ -52,6 +52,10 @@
             <p class="text-xl font-semibold">{{ userName }}</p>
             <p class="text-gray-400">{{ userRole }}</p>
             <p class="text-gray-400">{{ userEmail }}</p>
+            <div class="flex items-center pt-2" v-if="displayUserContent">
+              <div class="status-indicator w-4 h-4 rounded-full" :class="onlineStatus"></div>
+              <span class=" text-lg">{{ onlineStatus }}</span>
+            </div>
           </div>
           <div>
             <ul class="space-y-2">
@@ -107,6 +111,14 @@ const showIntro = ref(false);
 const showButton = ref(false);
 const isAnimating = ref(false); 
 const typedElement = ref(null);
+const onlineStatus = ref('');
+
+// Update online status function
+const updateOnlineStatus = () => {
+  onlineStatus.value = navigator.onLine ? 'online' : 'offline';
+};
+
+
 
 onMounted(() => {
   userRole.value = localStorage.getItem('userRole') || 'Guest';
@@ -116,6 +128,9 @@ onMounted(() => {
   if (userRole.value === 'admin' && route.path === '/'){
     router.push('/adminHome')
   }
+  updateOnlineStatus();
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
 
   const hasShownTypingEffect = localStorage.getItem('hasShownTypingEffect');
   if (hasShownTypingEffect) {
@@ -188,5 +203,21 @@ const sidebarClass = computed(() => {
   animation: flyUp 2s ease-in-out forwards; /* Smooth transition */
   filter: none;
   transition: none;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%; /* Make it a circle */
+  margin-right: 10px; /* Space between dot and text */
+}
+
+.online {
+  background-color: green; /* Green dot for online */
+}
+
+.offline {
+  background-color: red; /* Red dot for offline */
 }
 </style>
