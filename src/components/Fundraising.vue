@@ -53,19 +53,27 @@
       <div class="flex flex-col ">
         <p class="font-semibold text-xl font-serif my-5">Donate Now</p>
         <div class="grid grid-cols-1 gap-5 md:gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-          <router-link
-            v-for="item in donationStories"
-            :key="item.title"
-            :to="{name: 'detail', params: {id: item.title}}"
-            class="text-[#642E08] p-4 md:p-6 rounded-lg shadow-lg flex flex-col text-md hover:bg-[#b89d77]"
-            role="link"
-            tabindex="0" 
-          >
-            <div class="flex overflow-hidden rounded-md mb-4 w-full h-48">
-              <img :src="item.imageUrl" :alt="item.title" class="object-cover w-full h-full rounded-md" />
+          <div
+              v-for="item in donationStories"
+              :key="item.title"
+              class="text-[#642E08] p-4 md:p-6 rounded-lg shadow-lg flex flex-col text-md hover:bg-[#b89d77]"
+              role="link"
+              tabindex="0" 
+            >
+              <div class="flex overflow-hidden rounded-md mb-4 w-full h-48">
+                <img :src="item.imageUrl" :alt="item.title" class="object-cover w-full h-full rounded-md" />
+              </div>
+              <h1 class="font-semibold">{{ item.title }}</h1>
+              <div class="flex-grow"></div>
+              <router-link
+                :to="{ name: 'detail', params: { id: item.title } }"
+                class="underline mt-2 text-right text-gray-500 py-2 px-4 rounded hover:bg-[#b89d77] transition duration-300"
+              >
+                Read More >
+              </router-link>
             </div>
-            <h1 class="font-semibold">{{ item.title }}</h1>
-          </router-link>
+
+
         </div>
       </div>
     </main>
