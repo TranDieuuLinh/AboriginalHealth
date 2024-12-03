@@ -9,6 +9,9 @@ export default {
       gridColumn: {
         'span-2': 'span 2 / span 2',
       },
+      screens: {
+        xs: '330px', 
+      },
     },
   },
   plugins: [],

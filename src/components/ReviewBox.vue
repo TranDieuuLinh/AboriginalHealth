@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed inset-0 flex items-center justify-center z-30 bg-gray-900 bg-opacity-50"
+    class="fixed inset-0 flex items-center justify-center z-30 bg-gray-900 bg-opacity-50 xs:p-4 md:p-0"
     role="dialog"
     aria-labelledby="review-dialog-title"
     aria-describedby="review-dialog-description"
@@ -16,13 +16,13 @@
       </button>
       <h2
         id="review-dialog-title"
-        class="text-3xl font-extrabold mb-4 text-center text-gray-800"
+        class="md:text-3xl text-3xl font-extrabold mb-4 text-center text-gray-800 xs:text-xl"
       >
         Rate Us!
       </h2>
       <p
         id="review-dialog-description"
-        class="text-gray-600 mb-6 text-center"
+        class="text-gray-600 mb-6 text-center xs:text-sm md:text-lg text-lg"
       >
         Your feedback is super important to us. Please rate us and let us know how we're doing!
       </p>
@@ -82,7 +82,7 @@
 
       <button
         @click="submitReview"
-        class="bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition duration-300"
+        class="bg-black text-white py-2 px-4 xs:text-xs xs:px-2 md:text-base rounded-lg hover:bg-gray-800 transition duration-300"
         aria-label="Submit review"
       >
         Submit Review

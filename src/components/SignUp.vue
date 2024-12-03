@@ -1,5 +1,5 @@
 <template>
-    <div class="signUp-parent h-screen flex items-center justify-center" tabindex="0">
+    <div class="signUp-parent h-screen flex items-center justify-center xs:px-5" tabindex="0">
       <div class="flex md:flex-row items-center justify-between bg-white sm:max-w-xl md:max-w-3xl lg:max-w-4xl rounded-2xl shadow-lg">
         
         <div class="flex flex-col p-6 md:p-10 w-full md:w-1/2">

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col min-h-screen w-screen my-20">
     <!-- Event Form -->
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center xs:mx-5 mx-0 md:mx-0">
       <form
         ref="eventForm"
         class="max-w-md w-full p-5 bg-white rounded-lg shadow-lg"
@@ -191,19 +191,19 @@
     </div>
 
     <!-- Search and Sort -->
-    <div class="flex-grow mx-20 mt-10 text-black">
+    <div class="flex-grow md:mx-20 xs:mx-10 mt-10 text-black">
       <div class="flex justify-between items-center mb-5">
         <input
           type="text"
           placeholder="Search by Title"
           v-model="searchQuery"
-          class="border text-black rounded-md p-3"
+          class="border text-black rounded-md p-3 xs:text-[10px] md:text-[14px]"
           aria-label="Search by Title"
         />
         <div class="flex items-center">
           <button
             @click="toggleSort"
-            class="ml-2 bg-[#b89d77] text-white p-3 rounded-lg"
+            class="ml-2 bg-[#b89d77] text-white p-3 rounded-lg xs:text-[10px] md:text-[14px]"
             aria-label="Sort Events by Name"
           >
             Sort by Name <span>{{ isAscending ? '▲' : '▼' }}</span>
@@ -232,13 +232,13 @@
                 class="mr-2"
                 aria-label="Highlight event {{ event.title }}"
               />
-              <label class="text-sm font-medium text-white">Highlight?</label>
+              <label class="md:text-sm xs:text-[10px] font-medium text-white">Highlight?</label>
             </div>
 
             <div class="flex items-center justify-between mt-4">
               <div class="flex flex-col items-center justify-center bg-[#b89d77] w-36 h-24 rounded-lg text-center" aria-label="Event Date">
-                <span class="text-4xl font-bold text-white">{{ new Date(event.date).getDate() }} </span>
-                <span class="text-sm text-white">{{ new Date(event.date).toLocaleString('default', { month: 'short' }) }}, {{ new Date(event.date).getFullYear() }} </span>
+                <span class="md:text-4xl xs:text-lg font-bold text-white">{{ new Date(event.date).getDate() }} </span>
+                <span class="md:text-sm xs:text-xs text-white">{{ new Date(event.date).toLocaleString('default', { month: 'short' }) }}, {{ new Date(event.date).getFullYear() }} </span>
               </div>
 
               <!-- Event Details -->
@@ -251,7 +251,7 @@
                 >
                   <a
                     :href="event.url"
-                    class="underline text-[#b89d77]"
+                    class="underline text-[#b89d77] md:text-lg xs:text-base"
                     aria-label="View details for {{ event.title }}"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -261,8 +261,8 @@
                 </h3>
 
                 <!-- Location and Time -->
-                <div class="flex flex-row gap-5">
-                  <div class="flex flex-col gap-2 text-sm">
+                <div class="flex md:flex-row xs:flex-col md:gap-5 xs:gap-2 lg:text-sm text-sm xs:text-xs">
+                  <div class="flex flex-col gap-2 ">
                     <p class="flex items-center">
                       <i class="fas fa-map-marker-alt mr-2" aria-hidden="true"></i>
                       {{ event.location }}
@@ -274,7 +274,7 @@
                   </div>
 
                   <!-- Cost and Number of People -->
-                  <div class="flex flex-col gap-2 text-sm">
+                  <div class="flex flex-col gap-2 ">
                     <p class="flex items-center">
                       <i class="fas fa-dollar-sign mr-2" aria-hidden="true"></i>
                       {{ event.cost }}
@@ -296,7 +296,7 @@
               <!-- Delete Button -->
               <button
                 @click="deleteEvent(event.id)"
-                class="absolute top-1 right-16 bg-black text-white px-4 py-2 rounded-lg"
+                class="absolute top-1 md:right-16 xs:right-11 bg-black text-white md:px-4 xs:px-2 py-2 rounded-lg xs:text-xs md:text-base"
                 aria-label="Delete Event {{ event.title }}"
               >
                 Delete
@@ -304,7 +304,7 @@
               <!-- Edit Button -->
               <button
                 @click="editEvent(event)"
-                class="bg-[#aeaba6] absolute top-1 right-0 text-white px-3 py-2 rounded-lg"
+                class="bg-[#aeaba6] absolute top-1 right-0 text-white md:px-3 xs:px-2 py-2 rounded-lg xs:text-xs md:text-base"
                 aria-label="Edit event {{ event.title }}"
               >
                 Edit

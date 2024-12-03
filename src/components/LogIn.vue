@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center h-screen bg-[#82502d]">
+  <div class="flex justify-center items-center h-screen bg-[#82502d] xs:px-5">
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm" role="form" aria-labelledby="login-title">
       <h2 id="login-title" class="text-2xl font-bold text-center mb-4">Login</h2>
       <form @submit.prevent="login" aria-describedby="login-error">

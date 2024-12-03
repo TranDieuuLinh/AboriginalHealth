@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col min-h-screen w-screen my-20">
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center xs:mx-5 mx-0 md:mx-0">
       <form class="max-w-md w-full p-5 bg-white rounded-lg shadow-lg" @submit.prevent="handleImageUpload">
         <div class="mb-5">
           <label for="image" class="text-lg font-semibold">Upload file:</label>
@@ -29,7 +29,7 @@
         </div>
       </form>
     </div>
-    <div class="flex-grow mx-20 mt-10">
+    <div class="flex-grow md:mx-20 xs:mx-10 mt-10">
       <h1 class="text-xl">Articles</h1>
       <div class="grid grid-cols-1 gap-4 md:gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
         <div

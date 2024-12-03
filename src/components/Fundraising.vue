@@ -15,11 +15,9 @@
               <div>
                 <hr class="my-5 border-t-1 border-gray-600" />
                 <h1 class="text-sm md:text-xl italic">
-                  " Our Highest Ambition is to Help Bridge the Gap Between Indigenous and Non-Indigenous Communities ✿
+                  " Our Highest Ambition is to Help Bridge the Gap Between Indigenous and Non-Indigenous Communities ✿"
                 </h1>
-                <p class="pt-2 text-xs md:text-sm font-sans">
-                  With just one gift, you are changing lives and inspiring hope to heal this country.
-                </p>
+
                 <hr class="my-5 border-t-1 border-gray-600" />
               </div>
             </div>
@@ -27,7 +25,7 @@
 
           <div 
             class="mt-10 rounded-xl overflow-hidden mx-auto" 
-            style="width: 60%;"  
+            style="width: 65%;"  
             v-for="each in ourStory" 
             :key="each.description" 
             role="article"
@@ -40,7 +38,7 @@
               </div>
             </div>
             <hr class="my-10 border-t-1 border-gray-600" />
-            <div class="px-4">
+            <div class="px-4 xs:px-0">
               <p class="text-gray-700">{{ each.description }}</p>
             </div>
             <hr class="my-10 border-t-1 border-gray-600" />
@@ -49,7 +47,7 @@
       </div>
     </header>
 
-    <main class="md:px-10 lg:px-20 py-10 mb-10">
+    <main class="md:px-10 lg:px-20 xs:px-10 py-10 mb-10">
       <div class="flex flex-col ">
         <p class="font-semibold text-xl font-serif my-5">Donate Now</p>
         <div class="grid grid-cols-1 gap-5 md:gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">

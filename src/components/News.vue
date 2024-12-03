@@ -29,14 +29,14 @@ onMounted(() => {
 
 <template>
   <main>
-    <div class="md:px-8 lg:px-20 py-20">
+    <div class="md:px-8 lg:px-20 py-20 xs:px-4">
       <div class="flex-grow">
         <p class="text-xl py-5 font-serif">Articles</p>
         <div class="grid grid-cols-1 gap-4 md:gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
           <div
             v-for="each in articles"
             :key="each.title"
-            class="text-[#642E08] p-4 md:p-6 rounded-xl shadow-lg flex flex-col text-md bg-[#f1e6d5]"
+            class="text-[#642E08] p-4 md:p-6 rounded-xl shadow-lg flex flex-col md:text-md text-md xs:text-sm bg-[#f1e6d5]"
             role="article"
             aria-labelledby="article-title-{{ each.title }}"
             tabindex="0" 

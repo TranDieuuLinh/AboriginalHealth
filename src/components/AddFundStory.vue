@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col min-h-screen w-screen my-20">
+  <div class="flex flex-col min-h-screen w-screen my-20 ">
     <!-- Donation Form -->
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center xs:mx-5 mx-0 md:mx-0">
       <form class="max-w-md w-full p-5 bg-white rounded-lg shadow-lg" @submit.prevent="() => handleImageUpload('donation')">
         <div class="mb-5">
           <label for="donation-image" class="text-lg font-semibold">Upload Donation:</label>
@@ -26,7 +26,7 @@
     </div>
 
     <!-- Donation Stories Display -->
-    <div class="flex-grow mx-20 mt-10">
+    <div class="flex-grow md:mx-20 mt-10 xs:mx-10">
       <h1 class="text-xl">Donation Stories</h1>
       <div class="grid grid-cols-1 gap-4 md:gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
         <div v-for="each in donationStories" :key="each.id" class="text-[#642E08] p-4 md:p-6 rounded-xl shadow-lg flex flex-col text-md bg-white">
@@ -69,7 +69,7 @@
     </div>
     
     <!-- Our Stories Display -->
-    <div class="flex-grow mx-20 mt-10">
+    <div class="flex-grow mx-20 md:mx-20 mt-10 xs:mx-10">
       <h1 class="text-xl">Our Stories</h1>
       <div v-for="each in ourStories" :key="each.id" class="text-[#642E08] p-4 md:p-10 rounded-xl shadow-lg flex flex-col text-md bg-white">
         <div class="flex overflow-hidden h-58 w-full">

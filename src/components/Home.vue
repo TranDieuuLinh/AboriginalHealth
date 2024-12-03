@@ -7,16 +7,16 @@
         alt="A serene landscape representing healing and community"
         class="absolute w-full h-full object-cover"
       />
-      <div class="absolute inset-0 flex flex-col items-center justify-between p-4">
+      <div class="absolute inset-0 flex flex-col items-center justify-between p-4 flex-wrap">
         <div class="flex flex-col items-center justify-center flex-grow mt-40">
-          <p class="text-white text-center font-popping font-black text-4xl md:text-5xl">
+          <p class="text-white text-center font-popping font-black xs:font-sans text-4xl md:text-5xl xs:text-lg">
             Healing Our History <br />Strengthening Our Future
           </p>
         </div>
         <div class="mb-[8rem]">
           <button
             type="submit"
-            class="bg-[#68251D] text-white text-lg py-3 px-14 font-serif rounded-lg"
+            class="bg-[#68251D] text-white text-lg py-3 px-14 xs:px-10 font-serif rounded-lg xs:text-sm"
             aria-label="Donate Now"
           >
             Give Today
@@ -41,7 +41,7 @@
               'lg:col-span-2': item.spanHighlight === 2,
               'lg:col-span-3': item.spanHighlight === 3
             }"
-            class="text-[#000000] hover:bg-[#b89d77] text-md font-serif p-4 md:p-6 bg-[#fefdfd] rounded-lg shadow-lg border-b-1 flex flex-col justify-between transition-colors duration-300"
+            class="text-[#000000] hover:bg-[#b89d77] text-md lg:text-xl font-serif p-4 md:p-6 bg-[#fefdfd] rounded-lg shadow-lg border-b-1 flex flex-col justify-between transition-colors duration-300"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Read article: {{ item.title }}"
@@ -53,7 +53,7 @@
                 class="object-cover w-full h-full rounded-md"
               />
             </div>
-            <p class="text-center font-semibold mt-2">{{ item.title }}</p>
+            <p class="text-center font-semibold mt-2 xs:text-xs lg:text-base">{{ item.title }}</p>
           </a>
         </div>
       </div>
@@ -61,9 +61,9 @@
 
 
      <!-- Upcoming Events Section -->
-    <div class="bg-[#6e3e3a] w-screen px-10 py-20 flex flex-col items-center">
+    <div class="bg-[#6e3e3a] w-screen lg:px-10 px-10 py-20 xs:px-2 flex flex-col items-center flex-wrap">
       <!-- Title -->
-      <p class="text-2xl font-medium font-serif text-white mb-12">
+      <p class="md:text-2xl text-2xl sm:text-base xs:text-base font-medium font-serif text-white mb-12">
         Upcoming Highlight Events of Aboriginal Community
       </p>
       <div class="relative w-full max-w-5xl">
@@ -78,8 +78,8 @@
               <div class="flex items-center justify-between">
                 <!-- Date Box -->
                 <div class="flex flex-col items-center justify-center bg-[#b89d77] w-36 h-24 rounded-lg text-center" aria-label="Event Date">
-                  <span class="text-4xl font-bold text-white">{{ new Date(event.date).getDate() }} </span>
-                  <span class="text-sm text-white">{{ new Date(event.date).toLocaleString('default', { month: 'short' }) }}, {{ new Date(event.date).getFullYear() }} </span>
+                  <span class="md:text-4xl text-4xl xs:text-sm font-bold text-white">{{ new Date(event.date).getDate() }} </span>
+                  <span class="md:text-sm text-sm xs:text-xs text-white">{{ new Date(event.date).toLocaleString('default', { month: 'short' }) }}, {{ new Date(event.date).getFullYear() }} </span>
                 </div>
 
                 <!-- Event Details -->
@@ -87,15 +87,15 @@
                   <h3 class="font-bold mb-2">
                     <a
                       :href="event.url"
-                      class="text-2xl font-bold text-[#3d3c39] mb-2 hover:underline"
+                      class="md:text-2xl text-2xl xs:text-base font-bold text-[#3d3c39] mb-2 hover:underline"
                       aria-label="Event: {{ event.title }}"
                     >
                       {{ event.title }}
                     </a>
                   </h3>
                   <!-- Location and Time on the Same Line -->
-                  <div class="flex flex-row gap-5">
-                    <div class="flex flex-col gap-2 text-black-200 text-sm">
+                  <div class="flex sm:flex-row xs:flex-col md:gap-5 xs:gap-3">
+                    <div class="flex flex-col gap-2 text-black-200 lg:text-sm text-sm xs:text-xs">
                     <p class="flex items-center">
                       <i class="fas fa-map-marker-alt mr-2" aria-hidden="true"></i>
                       <router-link 
@@ -110,14 +110,14 @@
                       </router-link>
                     </p>
 
-                    <p class="flex items-center">
+                    <p class="flex items-center lg:text-sm text-sm xs:text-xs">
                       <i class="fas fa-clock mr-2" aria-hidden="true"></i>
                       <span class="sr-only">Time:</span>{{ event.startTime }} - {{ event.endTime }}
                     </p>
                   </div>
 
                     <!-- Cost and Number of People on the Same Line -->
-                    <div class="flex flex-col gap-2 text-sm">
+                    <div class="flex flex-col gap-2 lg:text-sm text-sm xs:text-xs">
                       <p class="flex items-center" aria-label="Cost: {{ event.cost }}">
                         <i class="fas fa-dollar-sign mr-4" aria-hidden="true"></i>{{ event.cost }}
                       </p>
@@ -127,7 +127,7 @@
                     </div>
                   </div>
                   <!-- Info Icon and Description -->
-                  <div class="flex mt-2 text-sm">
+                  <div class="flex mt-2 lg:text-sm text-sm xs:text-xs">
                     <i class="fas fa-info-circle mt-1 mr-2" aria-hidden="true"></i>
                     <p>{{ event.description }}</p>
                   </div>
@@ -153,27 +153,24 @@
      <!-- Reviews Section -->
      <div class="w-full flex flex-col items-center py-28">
   <div class="flex flex-col items-center mb-6">
-    <hr class="bg-[#882B2B] h-3 w-80 rounded-lg" />
+    <hr class="bg-[#882B2B] lg:h-3 h-3 sm:h-1 xs:h-1 w-80 rounded-lg" />
   </div>
-  <h2 class="text-5xl font-bold text-center font-serif mb-8">
+  <h2 class="text-5xl lg:text-5xl font-bold text-center font-serif mb-8 sm:text-lg xs:text-lg">
     What do active platform <br />users say about us
   </h2>
   
   <div v-if="averageTotalReviews > 0" class="w-full max-w-7xl text-center">
     <div class="rounded-lg p-4 mb-8">
-      <p class="text-lg text-gray-500 font-semibold font-serif">
+      <p class="text-lg xs:text-sm lg:text-lg  text-gray-500 font-semibold font-serif">
         <span>Average Rating: {{ averageTotalReviews }}/5 based on {{ generalUsers.length }} reviews</span>
       </p>
     </div>
-
-
-        
         <div class="w-full px-5">
           <div class="overflow-x-auto flex no-scrollbar">
             <div
               v-for="user in generalUsers"
               :key="user.email"
-              class="flex-shrink-0 w-80 bg-white shadow-lg rounded-lg p-4 border border-b-4 border-[#824640] mr-4 relative flex flex-col"
+              class="flex-shrink-0 w-80 md:w-80 xs:w-64 bg-white shadow-lg rounded-lg p-4 border border-b-4 border-[#824640] mr-4 relative flex flex-col"
             >
               <div class="flex flex-col items-center flex-grow gap-1">
                 <div class="w-12 h-12 bg-gray-200 mt-2 rounded-full flex items-center justify-center border border-gray-300">

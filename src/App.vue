@@ -20,11 +20,11 @@
 
     <div v-if="showIntro">
       <!-- Navbar -->
-      <div class="bg-black fixed w-full text-[#e6e6e6] flex flex-row justify-between items-center px-8 py-5 z-20">
-        <span class="flex flex-row gap-2.5">
-          <h1 class="font-thin logoTitle">HealingCountry</h1>
+      <div class="bg-black fixed w-full text-[#e6e6e6] flex flex-row justify-between items-center px-8 py-5 z-20 md:px-8 xs:px-4">
+        <span class="flex flex-row md:gap-2.5">
+          <h1 class="font-thin logoTitle md:text-[20px] xs:text-[12px]">HealingCountry</h1>
         </span>
-        <span class="flex flex-row gap-4" v-if="displayAdminContent">
+        <span class="flex flex-row gap-4 xs:text-[10px] md:text-base xs:gap-2" v-if="displayAdminContent">
           <RouterLink to="/adminHome" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">Home</RouterLink>
           <RouterLink to="/addNews" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">News</RouterLink>
           <RouterLink to="/addEvents" class="hover:text-gray-600 font-semibold" active-class="text-stone-300">Events</RouterLink>
@@ -184,7 +184,6 @@ const sidebarClass = computed(() => {
 <style scoped>
 .logoTitle {
   font-family: 'Times New Roman', Times, serif;
-  font-size: 20px;
 }
 
 /* First Animation - Moving up */
