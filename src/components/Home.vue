@@ -14,13 +14,15 @@
           </p>
         </div>
         <div class="mb-[8rem]">
-          <button
-            type="submit"
+          <RouterLink
+            to="/fundraising"
             class="bg-[#68251D] text-white text-lg py-3 px-14 xs:px-10 font-serif rounded-lg xs:text-sm"
             aria-label="Donate Now"
           >
             Give Today
-          </button>
+          </RouterLink>
+
+          
         </div>
       </div>
     </div>
@@ -218,6 +220,7 @@ import { onMounted, ref } from 'vue';
 import { db } from '../../firebaseConfig.js';
 import { query, getDocs, collection, where, onSnapshot } from '@firebase/firestore';
 import ReviewBox from './ReviewBox.vue';
+import { RouterLink } from 'vue-router';
 
 const articles = ref([]);
 const events = ref([]);
